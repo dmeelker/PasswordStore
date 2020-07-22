@@ -2,11 +2,13 @@
 using Microsoft.Extensions.Logging;
 using PublicApi.Repository;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 
 namespace PublicApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    //[EnableCors("CorsPolicy")]
     public class RepositoryController : ControllerBase
     {
         private readonly ILogger<RepositoryController> _logger;
@@ -18,7 +20,7 @@ namespace PublicApi.Controllers
         }
 
         [HttpGet]
-        public async Task<byte[]> Get(string username)
+        public async Task<string> Get(string username)
         {
             return await _repository.Get(username);
         }

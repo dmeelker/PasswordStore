@@ -10,9 +10,9 @@ namespace PublicApi.Repository
     {
         private readonly string _storageDirectory = "data";
 
-        public async Task<byte[]> Get(string id)
+        public async Task<string> Get(string id)
         {
-            return await File.ReadAllBytesAsync(Path.Combine(_storageDirectory, id));
+            return await File.ReadAllTextAsync(Path.Combine(_storageDirectory, id));
         }
 
         public async Task Save(string id, byte[] data)

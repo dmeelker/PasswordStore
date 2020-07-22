@@ -1,1 +1,18 @@
-lalala
+{
+    "Format": "1.0",
+    "Entries": [ 
+        {
+            "Type": "Group",
+            "Name": "Banking",
+            "Icon": "Folder",
+            "Children": [
+                {
+                    "Type": "Password",
+                    "Name": "SuperBank2000",
+                    "Password": "qwerty"
+                }
+            ]
+        }
+
+    ]
+}
