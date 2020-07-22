@@ -16,7 +16,7 @@ namespace PublicApi
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .CreateLogger();
-            
+
             try
             {
                 Log.Information("Starting up");
@@ -32,12 +32,14 @@ namespace PublicApi
             }
         }
 
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        private static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+        }
     }
 }
