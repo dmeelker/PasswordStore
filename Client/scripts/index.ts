@@ -1,3 +1,4 @@
+import "../styles/test.less"
 import * as other from "./other";
 import * as model from "./model/model";
 

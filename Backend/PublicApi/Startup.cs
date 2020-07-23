@@ -41,7 +41,7 @@ namespace PublicApi
             
             //app.UseHttpsRedirection();
             app.UseCors(builder =>
-                builder.WithOrigins("http://localhost:8081"));
+                builder.WithOrigins("http://localhost:8080"));
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

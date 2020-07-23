@@ -1,0 +1,10 @@
+FROM node
+
+RUN npm install -g http-server
+
+WORKDIR /webapp/src
+COPY . /webapp/src
+
+RUN npm install
+
+CMD npm start build
