@@ -1,29 +1,24 @@
 {
-  "name": "client",
+  "name": "Client",
   "version": "1.0.0",
   "description": "",
-  "private": true,
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --mode development",
+    "build": "webpack --mode production",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.6.0",
-    "file-loader": "^6.0.0",
-    "html-webpack-plugin": "^4.3.0",
+    "less-loader": "^6.2.0",
     "style-loader": "^1.2.1",
     "ts-loader": "^8.0.1",
     "typescript": "^3.9.7",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
-  },
-  "dependencies": {
-    "@types/html-webpack-plugin": "^3.2.3"
   }
 }
