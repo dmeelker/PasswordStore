@@ -2,6 +2,7 @@ import template from "./template.html";
 import * as Api from "../../api";
 import * as Screen from "../screen";
 import RepositoryOverviewScreen from "../repositoryOverview/repositoryOverview";
+import JsonRepositoryParser from "../../model/json/jsonRepositoryParser";
 
 export default class LoginScreen implements Screen.IScreen {
     private _container: HTMLElement;
@@ -29,8 +30,10 @@ export default class LoginScreen implements Screen.IScreen {
 
         try {
             let repositoryData = await Api.loadRepository();
+            let parsed = JsonRepositoryParser(repositoryData);
+
             console.log(repositoryData);
-            Screen.setActiveScreen(new RepositoryOverviewScreen());
+            Screen.setActiveScreen(new RepositoryOverviewScreen(parsed));
         } catch(e) {
             console.log(`ERROR: ${e}`);
         }
