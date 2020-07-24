@@ -1,0 +1,38 @@
+import template from "./template.html";
+import * as Api from "../../api";
+import * as Screen from "../screen";
+import RepositoryOverviewScreen from "../repositoryOverview/repositoryOverview";
+
+export default class LoginScreen implements Screen.IScreen {
+    private _container: HTMLElement;
+    private _usernameField: HTMLInputElement;
+    private _passwordField: HTMLInputElement;
+
+    public show(container: HTMLElement) {
+        this._container = container;
+        this._container.innerHTML = template;
+
+        let form = this._container.querySelector("#login-form") as HTMLFormElement;
+        this._usernameField = this._container.querySelector("#username");        
+        this._passwordField = this._container.querySelector("#password");
+
+        form.addEventListener("submit", (event) => this.formSubmitted(event));
+    }
+
+    public close() {
+
+    }
+
+    private async formSubmitted(event: Event) {
+        event.preventDefault();
+        console.log(`Submit! ${this._usernameField.value} ${this._passwordField.value}`);
+
+        try {
+            let repositoryData = await Api.loadRepository();
+            console.log(repositoryData);
+            Screen.setActiveScreen(new RepositoryOverviewScreen());
+        } catch(e) {
+            console.log(`ERROR: ${e}`);
+        }
+    }
+}
