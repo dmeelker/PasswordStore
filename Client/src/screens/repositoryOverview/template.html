@@ -1,6 +1,38 @@
-<div>Overview</div>
-<div>
-<div id="group-tree">
-    
-</div>
+<style>
+    #group-tree {
+        display: block;
+        border: solid 1px black;
+        width: 300px;
+    }
+
+    .node-content {
+        padding-left: .5em;
+    }
+
+    tree-node.selected>.name {
+        font-weight: bold;
+    }
+
+    #password-screen-container {
+        display: flex;
+    }
+
+    #password-screen-container>.left-panel {
+        box-sizing: border-box;
+        flex-grow: 1;
+        width: 25%;
+    }
+
+    #password-screen-container>.center-panel {
+        box-sizing: border-box;
+        flex-grow: 1;
+        width: 100%;
+    }
+</style>
+<div style="display: flex;">
+    <div>Overview</div>
+    <div id="password-screen-container">
+        <group-tree id="group-tree" class="left-panel"></group-tree>
+        <entry-table id="password-list" class="center-panel"></entry-table>
+    </div>
 </div>

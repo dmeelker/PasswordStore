@@ -4,6 +4,7 @@ import * as Screen from "../screen";
 import RepositoryOverviewScreen from "../repositoryOverview/repositoryOverview";
 import JsonRepositoryParser from "../../model/json/jsonRepositoryParser";
 
+
 export default class LoginScreen implements Screen.IScreen {
     private _container: HTMLElement;
     private _usernameField: HTMLInputElement;
@@ -28,14 +29,10 @@ export default class LoginScreen implements Screen.IScreen {
         event.preventDefault();
         console.log(`Submit! ${this._usernameField.value} ${this._passwordField.value}`);
 
-        try {
-            let repositoryData = await Api.loadRepository();
-            let parsed = JsonRepositoryParser(repositoryData);
+        let repositoryData = await Api.loadRepository();
+        let parsed = JsonRepositoryParser(repositoryData);
 
-            console.log(repositoryData);
-            Screen.setActiveScreen(new RepositoryOverviewScreen(parsed));
-        } catch(e) {
-            console.log(`ERROR: ${e}`);
-        }
+        console.log(repositoryData);
+        Screen.setActiveScreen(new RepositoryOverviewScreen(parsed));
     }
 }
