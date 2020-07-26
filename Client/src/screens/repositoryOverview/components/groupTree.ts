@@ -15,9 +15,12 @@ export default class GroupTree extends HTMLElement {
         super();
     }
 
-    private update() {
+    public update() {
+        this.innerHTML = "";
         this.appendChild(this.createNode(this._passwordRepository.root));
     }
+
+
 
     private createNode(group: Model.PasswordGroup) : TreeNode {
         let node = new TreeNode();
@@ -44,6 +47,10 @@ export default class GroupTree extends HTMLElement {
     set passwordRepository(repository: PasswordRepository) {
         this._passwordRepository = repository;
         this.update();
+    }
+
+    get selectedNode() : Model.PasswordGroup {
+        return this._selectedNode.group;
     }
 }
 

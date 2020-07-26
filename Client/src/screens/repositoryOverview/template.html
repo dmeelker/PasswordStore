@@ -1,14 +1,18 @@
 <div id="layout-container">
-    <div>Overview</div>
+    <div id="toolbar">
+        <button id="newGroupButton">New Group</button>
+        <button id="newEntryButton">New Entry</button>
+    </div>
     <div id="content-container">
         <group-tree id="group-tree" class="left-panel"></group-tree>
 
             <div id="right-container">
                 <entry-table id="password-list"></entry-table>
-                <div id="entry-details-container">
-                    Details
-                </div>
+                <entry-editor id="entry-editor"></entry-editor>
             </div>
-
     </div>
 </div>
+
+<!-- <popup-window>
+    aap
+</popup-window> -->

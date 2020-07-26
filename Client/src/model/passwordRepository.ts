@@ -9,7 +9,7 @@ export class PasswordGroup {
 }
 
 export class PasswordEntry {
-    constructor(public name: string, public password: string) {
+    constructor(public name: string, public username: string, public password: string) {
 
     }
 }

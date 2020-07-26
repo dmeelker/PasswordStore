@@ -20,7 +20,7 @@ function parseGroup(entry: any) : Model.PasswordGroup {
 }
 
 function parsePasswordEntry(entry: any) : Model.PasswordEntry {
-    return new Model.PasswordEntry(entry.Name, entry.Password);
+    return new Model.PasswordEntry(entry.Name, entry.Name, entry.Password);
 }
 
 function parseEntries(entries: any, parent: Model.PasswordGroup) {

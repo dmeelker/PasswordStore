@@ -53,7 +53,7 @@ export default class EntryTable extends HTMLElement {
     private createRow(entry: Model.PasswordEntry) : HTMLTableRowElement {
         let row = document.createElement("tr");
         row.appendChild(this.createCell(entry.name));
-        row.appendChild(this.createCell(entry.password));
+        row.appendChild(this.createCell(entry.username));
 
         let actionCell = document.createElement("td");
         let copyButton = document.createElement("button");

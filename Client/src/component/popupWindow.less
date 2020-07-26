@@ -1,0 +1,52 @@
+popup-window {
+    display: block;
+    
+    position: fixed;
+    z-index: 1000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border: solid 1px black;
+    background-color: white;
+    box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.2);
+
+    .window-flex-wrap {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        >* {
+            padding: .4em;
+        }
+
+        .window-title {
+            border-bottom: solid 1px black;
+        }
+
+        .window-content {
+            flex-grow: 1;
+            overflow: auto;
+
+            * {
+                box-sizing: border-box;
+            }
+        }
+
+        .button-bar {
+            text-align: right;
+        }
+    }
+
+    
+}
+
+.popup-overlay {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    background-color: rgba(0,0,0.2,0.2);
+}

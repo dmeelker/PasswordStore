@@ -19,6 +19,7 @@ export default class LoginScreen implements Screen.IScreen {
         this._passwordField = this._container.querySelector("#password");
 
         form.addEventListener("submit", (event) => this.formSubmitted(event));
+        this.formSubmitted(new CustomEvent("aap"));
     }
 
     public close() {
