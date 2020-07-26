@@ -1,0 +1,35 @@
+#group-tree {
+    @node-indent: 1em;
+
+    display: block;
+    border: solid 1px black;
+    width: 300px;
+    cursor: default;
+
+    overflow: auto;
+    white-space: nowrap;
+
+    .tree-node {
+        display: block;
+        
+        .name::before {
+            content: '\f107';
+            // font-family: 'Font Awesome\ 5 Free'; 
+            // font-weight: 900;
+        }
+
+        .name {
+            display:inline-block;
+            padding: .2em;
+        }
+
+        .node-content {
+            padding-left: @node-indent;
+        }
+    }
+
+    tree-node.selected>.name {
+        font-weight: bold;
+        background-color: lightgray;
+    }
+}

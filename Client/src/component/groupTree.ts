@@ -1,5 +1,6 @@
 import {PasswordRepository} from "../model/passwordRepository";
 import * as Model from "../model/passwordRepository";
+import "./groupTree.less";
 
 export default class GroupTree extends HTMLElement {
     private _passwordRepository: PasswordRepository;

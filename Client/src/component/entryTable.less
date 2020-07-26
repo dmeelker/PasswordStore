@@ -1,0 +1,39 @@
+entry-table {
+    table {
+        border-collapse: collapse;
+        
+        // thead {
+        //     display: block;
+        // }
+
+        // tbody {
+        //     display: block;
+        //     overflow-y: auto;
+
+        //     tr {
+        //         display: block;
+        //     }
+        // }
+
+        th {
+            text-align: left;
+        }
+
+        td, th {
+            padding: .5em;
+            border: solid 1px black;
+        }
+
+        th:nth-child(2) {
+            width: 100%;
+        }
+
+        tr:nth-child(odd) td {
+            background-color: lightgray;
+        }
+
+        tr.selected td {
+            background-color: green;;
+        }
+    }
+}

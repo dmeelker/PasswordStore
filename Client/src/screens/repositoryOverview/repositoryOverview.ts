@@ -1,4 +1,5 @@
 import template from "./template.html";
+import "./style.less";
 import {IScreen} from "../screen";
 import * as Model from "../../model/passwordRepository";
 import GroupTree from "../../component/groupTree";
@@ -9,6 +10,7 @@ export default class RepositoryOverviewScreen implements IScreen {
     private _passwordRepository: Model.PasswordRepository;
     private _groupTree: GroupTree;
     private _passwordList: EntryTable;
+    private _selectedEntry: Model.PasswordEntry;
 
     constructor(passwordRepository: Model.PasswordRepository) {
         this._passwordRepository = passwordRepository;
@@ -23,10 +25,16 @@ export default class RepositoryOverviewScreen implements IScreen {
         this._groupTree.addEventListener("select", (event: CustomEvent) => this.groupSelected(event.detail));
 
         this._passwordList = this._container.querySelector("#password-list");
+        this._passwordList.addEventListener("select", (event: CustomEvent) => this.passwordEntrySelected(event.detail));
 
         // let tree = this._container.querySelector("#group-tree") as HTMLElement;
 
         // this.populateTree(tree);
+    }
+    
+    private passwordEntrySelected(entry: Model.PasswordEntry) {
+        console.log(entry);
+        this._selectedEntry = entry;
     }
 
     private groupSelected(group: Model.PasswordGroup) {

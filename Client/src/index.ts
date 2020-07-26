@@ -1,6 +1,6 @@
 /// <reference path="./types/html.d.ts"/>
 
-import "./style.css";
+import "./style.less";
 import {getHello} from "./component/mod";
 import * as model from "./model/passwordRepository";
 import * as Screen from "./screens/screen";
