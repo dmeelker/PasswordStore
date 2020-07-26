@@ -2,8 +2,8 @@ import template from "./template.html";
 import "./style.less";
 import {IScreen} from "../screen";
 import * as Model from "../../model/passwordRepository";
-import GroupTree from "../../component/groupTree";
-import EntryTable from "../../component/entryTable";
+import GroupTree from "./components/groupTree";
+import EntryTable from "./components/entryTable";
 
 export default class RepositoryOverviewScreen implements IScreen {
     private _container: HTMLElement;
@@ -14,6 +14,11 @@ export default class RepositoryOverviewScreen implements IScreen {
 
     constructor(passwordRepository: Model.PasswordRepository) {
         this._passwordRepository = passwordRepository;
+    }
+
+    static registerComponents(customElements: CustomElementRegistry) {
+        GroupTree.register(customElements);
+        EntryTable.register(customElements);
     }
 
     public show(container: HTMLElement) {

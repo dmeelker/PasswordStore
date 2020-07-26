@@ -1,6 +1,6 @@
 import "./entryTable.less";
 
-import * as Model from "../model/passwordRepository";
+import * as Model from "../../../model/passwordRepository";
 import {Clipboard} from 'ts-clipboard';
 
 export default class EntryTable extends HTMLElement {

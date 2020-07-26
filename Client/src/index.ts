@@ -1,13 +1,9 @@
 /// <reference path="./types/html.d.ts"/>
 
 import "./style.less";
-import {getHello} from "./component/mod";
-import * as model from "./model/passwordRepository";
 import * as Screen from "./screens/screen";
 import LoginScreen from "./screens/login/loginScreen";
-
-import GroupTree from "./component/groupTree";
-import EntryTable from "./component/entryTable";
+import RepositoryOverview from "./screens/repositoryOverview/repositoryOverview";
 
 import * as CryptoJs from "crypto-js";
 
@@ -19,8 +15,7 @@ document.body.appendChild(element);
 Screen.setScreenContainer(element);
 Screen.setActiveScreen(new LoginScreen());
 
-GroupTree.register(customElements);
-EntryTable.register(customElements);
+RepositoryOverview.registerComponents(customElements);
 
 // let cypherText = CryptoJs.AES.encrypt("TEST TEST", "KEY");
 // let decoded = CryptoJs.AES.decrypt(cypherText, "KEY");
