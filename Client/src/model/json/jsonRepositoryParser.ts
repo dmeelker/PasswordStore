@@ -1,12 +1,12 @@
 import * as Model from "../passwordRepository";
 
-export default function parse(jsonDocument: any) : Model.PasswordRepository {
+export default function parse(jsonDocument: any) : Model.PasswordGroup {
     let entries = jsonDocument.Entries;
     let rootGroup = new Model.PasswordGroup("Root");
 
     parseEntries(entries, rootGroup);
 
-    return new Model.PasswordRepository(rootGroup);
+    return rootGroup;
 }
 
 function parseGroup(entry: any) : Model.PasswordGroup {

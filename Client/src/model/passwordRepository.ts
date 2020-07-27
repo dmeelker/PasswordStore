@@ -1,3 +1,6 @@
+import * as Api from "../api";
+import JsonRepositoryParser from "../model/json/jsonRepositoryParser";
+
 export class PasswordGroup {
     public childGroups: PasswordGroup[];
     public entries: PasswordEntry[];
@@ -19,6 +22,11 @@ export class PasswordRepository {
 
     constructor(root: PasswordGroup) {
         this._root = root;
+    }
+
+    public static async load(username: string, password: string) : Promise<PasswordRepository> {
+        let repositoryData = await Api.loadRepository();
+        return new PasswordRepository(JsonRepositoryParser(repositoryData));
     }
 
     get root() : PasswordGroup {

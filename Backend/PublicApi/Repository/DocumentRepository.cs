@@ -8,7 +8,7 @@ namespace PublicApi.Repository
 {
     public class DocumentRepository
     {
-        private readonly string _storageDirectory = "data";
+        private readonly string _storageDirectory = "datafiles";
 
         public async Task<string> Get(string id)
         {
