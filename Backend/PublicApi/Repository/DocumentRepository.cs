@@ -12,7 +12,11 @@ namespace PublicApi.Repository
 
         public async Task<string> Get(string id)
         {
-            return await File.ReadAllTextAsync(Path.Combine(_storageDirectory, id));
+            var file = Path.Combine(_storageDirectory, id);
+            if (File.Exists(file))
+                return await File.ReadAllTextAsync(Path.Combine(_storageDirectory, id));
+            else
+                return null;
         }
 
         public async Task Save(string id, byte[] data)
