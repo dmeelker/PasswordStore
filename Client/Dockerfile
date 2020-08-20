@@ -1,6 +1,8 @@
 FROM node:current-alpine as builder
 WORKDIR /webapp
 
+RUN apk add --no-cache --virtual .build-deps make gcc g++ python
+
 ENV REACT_APP_ENVIRONMENT production
 
 COPY package.json ./
