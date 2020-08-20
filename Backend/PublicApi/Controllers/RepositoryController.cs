@@ -34,7 +34,9 @@ namespace PublicApi.Controllers
                 return new StatusCodeResult((int)HttpStatusCode.Forbidden);
             }
 
-            return Ok(await _repository.Get(session.User));
+            var document = await _repository.Get(session.User);
+
+            return document != null ? Ok(document) : (IActionResult)NotFound();
         }
 
         [HttpPost]

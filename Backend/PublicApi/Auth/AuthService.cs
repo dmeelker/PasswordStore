@@ -16,7 +16,7 @@ namespace PublicApi.Auth
 
         public bool VerifyCredentials(string user, string password)
         {
-            return user == "Dennis" && password == "pass";
+            return (user == "Dennis" && password == "pass") || (user == "Dennis2" && password == "pass");
         }
 
         public UserSession BeginSession(string user)
