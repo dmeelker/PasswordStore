@@ -1,5 +1,6 @@
 import * as Api from "../api";
 import JsonRepositoryParser from "../model/json/jsonRepositoryParser";
+import JsonRepositoryGenerator from "../model/json/jsonRepositoryGenerator";
 
 export class PasswordGroup {
     public childGroups: PasswordGroup[];
@@ -25,8 +26,13 @@ export class PasswordRepository {
     }
 
     public static async load(username: string, password: string) : Promise<PasswordRepository> {
-        let repositoryData = await Api.loadRepository();
-        return new PasswordRepository(JsonRepositoryParser(repositoryData));
+        let apiDocument = await Api.loadRepository();
+        return new PasswordRepository(JsonRepositoryParser(apiDocument));
+    }
+
+    public async save(username: string, password: string) {
+        let apiModel = JsonRepositoryGenerator(this._root);
+        Api.saveRepository(apiModel);
     }
 
     get root() : PasswordGroup {

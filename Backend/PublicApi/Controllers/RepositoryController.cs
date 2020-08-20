@@ -3,55 +3,53 @@ using Microsoft.Extensions.Logging;
 using PublicApi.Repository;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
+using System.Text;
+using System.IO;
+using System.Linq;
+using PublicApi.Auth;
+using System.Net;
 
 namespace PublicApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    //[EnableCors("CorsPolicy")]
     public class RepositoryController : ControllerBase
     {
         private readonly ILogger<RepositoryController> _logger;
         private readonly DocumentRepository _repository = new DocumentRepository();
+        private readonly AuthService _authService;
 
-        public RepositoryController(ILogger<RepositoryController> logger)
+        public RepositoryController(ILogger<RepositoryController> logger, AuthService authService)
         {
             _logger = logger;
+            _authService = authService;
         }
 
         [HttpGet]
-        public async Task<string> Get(string username)
+        public async Task<IActionResult> Get()
         {
-            return await _repository.Get(username);
+            var header = HttpContext.Request.Headers["auth-token"].FirstOrDefault();
+            if(!_authService.VerifyToken(header, out var session))
+            {
+                return new StatusCodeResult((int)HttpStatusCode.Forbidden);
+            }
+
+            return Ok(await _repository.Get(session.User));
         }
 
         [HttpPost]
-        public async Task Put(string username, byte[] data)
+        public async Task<IActionResult> Put()
         {
-            _logger.LogInformation("Updating repository for user {username}", username);
-            await _repository.Save(username, data);
+            var header = HttpContext.Request.Headers["auth-token"].FirstOrDefault();
+            if (!_authService.VerifyToken(header, out var session))
+            {
+                return new StatusCodeResult((int)HttpStatusCode.Forbidden);
+            }
+
+            var text = await new StreamReader(Request.Body).ReadToEndAsync();
+            _logger.LogInformation("Updating repository for user {username}", session.User);
+            await _repository.Save(session.User, Encoding.UTF8.GetBytes(text));
+            return Ok();
         }
     }
 }
-/*
-
-{
-    "Format": "1.0",
-    "Entries": [ 
-        {
-            "Type": "Group",
-            "Name": "Banking",
-            "Icon": "Folder",
-            "Children": [
-                {
-                    "Type": "Password",
-                    "Name": "SuperBank2000",
-                    "Password": "qwerty",
-                }
-            ]
-        }
-
-    ]
-}
-
- */

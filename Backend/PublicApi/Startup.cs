@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PublicApi.Auth;
 
 namespace PublicApi
 {
@@ -19,15 +20,9 @@ namespace PublicApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddCors(options =>
-            // {
-            //     options.AddPolicy("CorsPolicy", builder =>
-            //         {
-            //             builder.WithOrigins("http://localhost:8081/")
-            //                 .WithMethods("PUT", "GET", "OPTIONS");
-            //         });
-            // });
-            
+            services.AddSingleton<SessionStore>();
+            services.AddSingleton<AuthService>();
+
             services.AddControllers();
         }
 
@@ -41,7 +36,7 @@ namespace PublicApi
             
             //app.UseHttpsRedirection();
             app.UseCors(builder =>
-                builder.WithOrigins("http://localhost:8080"));
+                builder.WithOrigins("*").AllowAnyHeader());
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

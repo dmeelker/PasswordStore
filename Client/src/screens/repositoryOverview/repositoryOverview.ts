@@ -75,6 +75,7 @@ export default class RepositoryOverviewScreen implements IScreen {
                 let newGroup = new Model.PasswordGroup(input);
                 this._groupTree.selectedNode.childGroups.push(newGroup);
                 this._groupTree.update();
+                this._passwordRepository.save("test", "test");
                 //this._groupTree.selectedNode = newGroup;
             });
     }
