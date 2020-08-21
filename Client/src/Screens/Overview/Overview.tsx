@@ -94,8 +94,8 @@ export function Overview() {
   }
 
   return (
-    <div className="p-4 h-full">
-      <div className="p-4 box-border shadow bg-white border-size h-full flex flex-col">
+    <div className="md:p-4 h-full">
+      <div className="p-2 md:p-4 box-border shadow bg-white border-size h-full flex flex-col">
         <div className="py-4">
           <button className="btn-toolbar" onClick={createNewGroup}>Add Group</button>
           <button className="btn-toolbar" onClick={createNewEntry}>Add Entry</button>

@@ -144,7 +144,7 @@ function GroupNode(props: GroupNodeProps) {
           }
         </button>
         <button 
-          className={"flex-1 px-2 text-left rounded hover:bg-green-200 focus:bg-green-200 focus:outline-none" + conditionalClass(props.selectedGroup === props.group, "bg-green-200")} 
+          className={"flex-1 md:px-2 text-left rounded hover:bg-green-200 focus:bg-green-200 focus:outline-none" + conditionalClass(props.selectedGroup === props.group, "bg-green-200")} 
           draggable="true" 
           onDragStart={onDragStart} 
           onDragEnter={onDragEnter} 

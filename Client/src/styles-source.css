@@ -2,7 +2,15 @@
 
 @import "tailwindcss/components";
 
+html {
+    font-size: 14px;
+}
 
+@media (min-width: 768px) { 
+    html {
+        font-size: 16px;
+    }
+}
 
 
 /* Links */
@@ -16,34 +24,68 @@ a:hover {
 
 /* Buttons */
 .btn {
-    @apply bg-gray-200 px-6 py-2 rounded border-gray-100 mx-1;
+    @apply bg-gray-200;
+    @apply px-3;
+    @apply py-1;
+    @apply rounded;
+    @apply border-gray-100;
+    @apply mx-1;
 }
 
 .btn:hover {
     @apply bg-gray-400;
 }
 
+@media (min-width: 768px) { 
+    .btn {
+        @apply px-6;
+        @apply py-2;
+    }
+}
 
 .btn-primary {
-    @apply bg-blue-200 px-6 py-2 rounded border-gray-100 mx-1;
+    @apply bg-blue-200;
+    @apply px-3;
+    @apply py-1;
+    @apply rounded;
+    @apply border-gray-100;
+    @apply mx-1;
 }
 
 .btn-primary:hover {
     @apply bg-blue-400;
 }
 
+@media (min-width: 768px) { 
+    .btn-primary {
+        @apply px-6;
+        @apply py-2;
+    }
+}
 
 .btn-secondary {
-    @apply bg-gray-200 px-6 py-2 rounded border-gray-100 mx-1;
+    @apply bg-gray-200;
+    @apply px-3;
+    @apply py-1;
+    @apply rounded;
+    @apply border-gray-100;
+    @apply mx-1;
 }
 
 .btn-secondary:hover {
     @apply bg-gray-400;
 }
 
+@media (min-width: 768px) { 
+    .btn-secondary {
+        @apply px-6;
+        @apply py-2;
+    }
+}
+
 .btn-toolbar {
     @apply bg-gray-200;
-    @apply p-2;
+    @apply p-1;
     @apply rounded;
     @apply border-gray-100;
     @apply mx-1;
@@ -51,6 +93,12 @@ a:hover {
 
 .btn-toolbar:hover {
     @apply bg-gray-400;
+}
+
+@media (min-width: 768px) { 
+    .btn-toolbar {
+        @apply p-2;
+    }
 }
 
 .btn-icon {
@@ -69,11 +117,16 @@ a:hover {
 
 /* Forms */
 .text-input {
-    @apply border border-gray-500 rounded px-2 leading-8;
+    @apply border;
+    @apply border-gray-500;
+    @apply rounded;
+    @apply px-2;
+    @apply leading-8;
 }
 
 .text-input:focus {
-    @apply outline-none border-blue-300;
+    @apply outline-none;
+    @apply border-blue-300;
 }
 
 input:invalid {
@@ -82,15 +135,34 @@ input:invalid {
 
 /* Table */
 table {
-    @apply rounded shadow;
+    @apply rounded;
+    @apply shadow;
+}
+
+th, td {
+    @apply px-2;
+    @apply py-1;
 }
 
 th {
-    @apply bg-gray-200 text-left px-4 py-2 font-medium border-b border-gray-300;
+    @apply bg-gray-200;
+    @apply text-left;
+    @apply font-medium;
+    @apply border-b;
+    @apply border-gray-300;
 }
 
 td {
-    @apply bg-gray-100 border-b border-gray-300 px-4 py-4;   
+    @apply bg-gray-100;
+    @apply border-b;
+    @apply border-gray-300;
+}
+
+@media (min-width: 768px) { 
+    th, td {
+        @apply px-4;
+        @apply py-2;
+    }
 }
 
 @import "tailwindcss/utilities";
