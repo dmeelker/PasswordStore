@@ -133,7 +133,6 @@ class EntryService {
     }
 
     public load(apiDocument: Api.Document) {
-        this._document = apiDocument;
         const root = convertApiGroupToModel(apiDocument.root);
         this.root.set(root);
     }
