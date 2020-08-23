@@ -77,6 +77,7 @@ export async function getPasswords(): Promise<Document | null> {
 export async function savePasswords(document: Document): Promise<boolean> {
     const encryptedRepository = Crypt.encrypt(JSON.stringify(document), encryptionKey);
     const finalDocument = new EncryptedDocument();
+    finalDocument.version = 1;
     finalDocument.version = document.version;
     finalDocument.ciphertext = encryptedRepository.ciphertext;
     finalDocument.iv = encryptedRepository.iv;

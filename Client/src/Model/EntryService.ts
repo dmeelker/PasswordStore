@@ -182,7 +182,7 @@ class EntryService {
 
     private modelChanged() {
         const document = new Api.Document();
-        document.version = 1;
+        document.format = 1;
         document.root = convertToApiModelGroup(this.root.get());
 
         Api.savePasswords(document).then((result) => {
