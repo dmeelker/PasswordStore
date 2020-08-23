@@ -1,6 +1,7 @@
 import React from 'react';
 import { login, getPasswords, Entry } from '../../Services/ApiService';
 import EntryService from '../../Model/EntryService';
+import Config from "../../config";
 
 export interface LoginProps {
     loginSuccessful: () => any;
@@ -8,8 +9,8 @@ export interface LoginProps {
 
 export function Login(props: LoginProps) {
     const [loading, setLoading] = React.useState(false);
-    const [username, setUsername] = React.useState("Dennis");
-    const [password, setPassword] = React.useState("pass");
+    const [username, setUsername] = React.useState(Config.TEST_BUILD ? "Dennis" : "");
+    const [password, setPassword] = React.useState(Config.TEST_BUILD ? "pass" : "");
     const [errorMessage, setErrorMessage] = React.useState<string>();
 
     const handleSubmit = (e: React.FormEvent) => {

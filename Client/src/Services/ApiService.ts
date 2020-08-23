@@ -1,7 +1,9 @@
 import * as Model from "../Model/Model";
+import * as Crypt from "../Utilities/Crypt";
 import Config from "../config";
 
 let token: string | null = null;
+let encryptionKey: string;
 
 export class Entry {
     public id: string = "";
@@ -23,6 +25,15 @@ export class Document {
     public root: Group = new Group();
 }
 
+export class EncryptedDocument {
+    public format: number = 1;
+    public version: number = 1;
+    public editDate: Date = new Date();
+    public ciphertext: string = "";
+    public iv: string = "";
+    public salt: string = "";
+}
+
 export async function login(username: string, password: string): Promise<void> {
     let options: RequestInit = {
         method: 'post',
@@ -39,6 +50,7 @@ export async function login(username: string, password: string): Promise<void> {
     let response = await fetch(request);
 
     if(response.ok) {
+        encryptionKey = Crypt.hashKey(password);
         const tokenResponse = await response.json();
         token = tokenResponse.token;
         return;
@@ -51,7 +63,9 @@ export async function getPasswords(): Promise<Document | null> {
     let response = await authenticatedGet('/repository');
 
     if(response.ok) {
-        return await response.json();
+        const encrypterDocument: EncryptedDocument = await response.json();
+        const decryptedRepository = Crypt.decrypt(encrypterDocument, encryptionKey);
+        return JSON.parse(decryptedRepository);
     } else if(response.status === 404) {
         return null;
     } else {
@@ -60,7 +74,13 @@ export async function getPasswords(): Promise<Document | null> {
 }
 
 export async function savePasswords(userId: string, document: Document): Promise<boolean> {
-    let response = await authenticatedPost('/repository', document);
+    const encryptedRepository = Crypt.encrypt(JSON.stringify(document), encryptionKey);
+    const finalDocument = new EncryptedDocument();
+    finalDocument.ciphertext = encryptedRepository.ciphertext;
+    finalDocument.iv = encryptedRepository.iv;
+    finalDocument.salt = encryptedRepository.salt;
+
+    let response = await authenticatedPost('/repository', finalDocument);
 
     if(response.ok) {
         await response.text();
