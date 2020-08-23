@@ -6,6 +6,7 @@ import { convertApiGroupToModel, convertToApiModelGroup } from "../Utilities/Mod
 
 class EntryService {
     readonly root = new Observable<PasswordGroup>(new PasswordGroup("root"));
+    private _documentVersion: number = 0;
 
     public addSubGroup(newGroup: PasswordGroup, targetGroupId: string) {
         const newRoot = this.root.get().clone();
@@ -132,6 +133,7 @@ class EntryService {
     }
 
     public load(apiDocument: Api.Document) {
+        this._document = apiDocument;
         const root = convertApiGroupToModel(apiDocument.root);
         this.root.set(root);
     }
@@ -183,6 +185,7 @@ class EntryService {
     private modelChanged() {
         const document = new Api.Document();
         document.format = 1;
+        document.version = ++this._documentVersion;
         document.root = convertToApiModelGroup(this.root.get());
 
         Api.savePasswords(document).then((result) => {

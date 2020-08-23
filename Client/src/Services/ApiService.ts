@@ -23,10 +23,11 @@ export class Group {
 export class Document {
     public format: number = 1;
     public version: number = 1;
+    public editDate: Date = new Date();
     public root: Group = new Group();
 }
 
-export class EncryptedDocument {
+class EncryptedDocument {
     public format: number = 1;
     public version: number = 1;
     public editDate: Date = new Date();
@@ -64,9 +65,15 @@ export async function getPasswords(): Promise<Document | null> {
     let response = await authenticatedGet('/repository');
 
     if(response.ok) {
-        const encrypterDocument: EncryptedDocument = await response.json();
-        const decryptedRepository = Crypt.decrypt(encrypterDocument, encryptionKey);
-        return JSON.parse(decryptedRepository);
+        const encryptedDocument: EncryptedDocument = await response.json();
+        const decryptedRepository = Crypt.decrypt(encryptedDocument, encryptionKey);
+        const document = new Document();
+        document.format = encryptedDocument.format;
+        document.version = encryptedDocument.version;
+        document.editDate = encryptedDocument.editDate;
+        document.root = JSON.parse(decryptedRepository);
+
+        return document;
     } else if(response.status === 404) {
         return null;
     } else {
@@ -75,9 +82,9 @@ export async function getPasswords(): Promise<Document | null> {
 }
 
 export async function savePasswords(document: Document): Promise<boolean> {
-    const encryptedRepository = Crypt.encrypt(JSON.stringify(document), encryptionKey);
+    const encryptedRepository = Crypt.encrypt(JSON.stringify(document.root), encryptionKey);
     const finalDocument = new EncryptedDocument();
-    finalDocument.version = 1;
+    finalDocument.format = document.format;
     finalDocument.version = document.version;
     finalDocument.ciphertext = encryptedRepository.ciphertext;
     finalDocument.iv = encryptedRepository.iv;
