@@ -11,7 +11,12 @@ export function ImportCsvPanel(props: ImportCsvPanelProps) {
     const [errorMessage, setErrorMessage] = useState("");
 
     function importButtonPressed() {
-        EntryService.importFromCsv(textInput);
+        try {
+            EntryService.importFromCsv(textInput);
+        } catch(e) {
+            setErrorMessage(e.message);
+            return;
+        }
         props.onClose();
     }
 
@@ -22,7 +27,13 @@ export function ImportCsvPanel(props: ImportCsvPanelProps) {
     return <Modal title="Import Keypass CSV">
         <div style={{width: "80vw", height: "80vh"}} className="flex flex-col">
             {errorMessage && <div>{errorMessage}</div>}
-            <textarea className="flex-1 mb-2 resize-none border font-mono" value={textInput} onChange={(e) => setTextInput(e.target.value)} placeholder="Paste keypass CSV here"></textarea>
+            <textarea 
+                className="flex-1 mb-2 resize-none border font-mono" 
+                value={textInput} 
+                onChange={(e) => setTextInput(e.target.value)} 
+                placeholder="Paste keypass CSV here"
+                wrap="off"
+                spellCheck={false}></textarea>
             <div className="text-right">
                 <button className="btn-primary" onClick={importButtonPressed}>Import</button>
                 <button className="btn-secondary" onClick={cancelButtonPressed}>Cancel</button>
