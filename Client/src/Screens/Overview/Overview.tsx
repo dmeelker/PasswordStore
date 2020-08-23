@@ -6,6 +6,7 @@ import { EntryDetails } from './EntryDetails';
 import { useObservable } from '../../Model/Observable';
 import EntryService from '../../Model/EntryService';
 import { Modal } from '../../Components/Modal';
+import { ImportCsvPanel } from './ImportCsvPanel';
 
 export function Overview() {
   const groups = useObservable(EntryService.root);
@@ -14,6 +15,7 @@ export function Overview() {
   const [createMode, setCreateMode] = useState(false);
   const [searchResults, setSearchResults] = useState<PasswordEntry[]>();
   const [searchTerms, setSearchTerms] = useState("");
+  const [importCsvPanelVisible, setImportCsvPanelVisible] = useState(false);
 
   const selectedGroup = groups.findGroupById(selectedGroupId);
   
@@ -32,6 +34,10 @@ export function Overview() {
     
     let newEntry = new PasswordEntry(selectedGroup);
     showEntryDetails(newEntry, true);
+  }
+
+  function showImportCsvPanel() {
+    setImportCsvPanelVisible(true);
   }
 
   function groupSelected(group: PasswordGroup) {
@@ -87,7 +93,7 @@ export function Overview() {
   let entryDetails;
   if (openEntry) {
     entryDetails = (
-      <Modal>
+      <Modal title="Entry Details">
         <EntryDetails entry={openEntry} savePressed={completeEdit} cancelPressed={cancelEdit}/>
       </Modal>
     );
@@ -99,6 +105,7 @@ export function Overview() {
         <div className="py-4">
           <button className="btn-toolbar" onClick={createNewGroup}>Add Group</button>
           <button className="btn-toolbar" onClick={createNewEntry}>Add Entry</button>
+          <button className="btn-toolbar" onClick={showImportCsvPanel}>Import</button>
           <input type="search" className="text-input" placeholder="search" value={searchTerms} onChange={(e) => setSearchTerms(e.target.value)} onInput={searchTermsChanged}/>
         </div>
         <div className="flex-1 flex overflow-hidden">
@@ -119,6 +126,7 @@ export function Overview() {
           </div>
         </div>
         {entryDetails}
+        {importCsvPanelVisible && <ImportCsvPanel onClose={() => setImportCsvPanelVisible(false)}/>}
       </div>
     </div>
   );

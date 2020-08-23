@@ -3,6 +3,7 @@ import { Observable } from "./Observable";
 import NotificationService from "./NotificationService";
 import * as Api from "../Services/ApiService";
 import { convertApiGroupToModel, convertToApiModelGroup } from "../Utilities/ModelConverter";
+import { CsvParser } from "../Utilities/CsvParser";
 
 class EntryService {
     readonly root = new Observable<PasswordGroup>(new PasswordGroup("root"));
@@ -130,6 +131,24 @@ class EntryService {
 
     public new(name: string) {        
         this.replaceRoot(new PasswordGroup(name));
+    }
+
+    public importFromCsv(csvInput: string) {
+        const newRoot = this.root.get().clone();
+        const csvData = new CsvParser().parse(csvInput);
+
+        for(let i=1; i<csvData.length; i++) {
+            const line = csvData[i];
+            const newEntry = new PasswordEntry(newRoot);
+            newEntry.name = line[1];
+            newEntry.username = line[2];
+            newEntry.password = line[3];
+            newEntry.url = line[4];
+
+            newRoot.add(newEntry);
+        }
+
+        this.replaceRoot(newRoot);
     }
 
     public load(apiDocument: Api.Document) {
