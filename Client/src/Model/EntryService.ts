@@ -185,7 +185,7 @@ class EntryService {
         document.version = 1;
         document.root = convertToApiModelGroup(this.root.get());
 
-        Api.savePasswords("123", document).then((result) => {
+        Api.savePasswords(document).then((result) => {
             NotificationService.showNotification("Changes saved");
         });
     }
