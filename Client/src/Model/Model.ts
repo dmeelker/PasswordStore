@@ -76,6 +76,19 @@ export class PasswordGroup {
         return group;
     }
 
+    public findGroupByName(name: string) : PasswordGroup | null {
+        let group: PasswordGroup | null = null;
+        const startGroup = this;
+
+        this.visitGroup(this, (g) => {
+            if(g !== startGroup && g.name === name) {
+                group = g;
+            }
+        });
+
+        return group;
+    }
+
     public findEntryById(id: string) : PasswordEntry | null {
         let entry: PasswordEntry | null = null;
 

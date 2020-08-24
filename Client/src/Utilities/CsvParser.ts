@@ -45,6 +45,7 @@ class TextReader {
 }
 
 export interface CsvEntry {
+    group: string;
     name: string;
     username: string;
     url: string;
@@ -62,6 +63,7 @@ export class CsvParser {
             const line = data[i];
 
             items.push({
+                group: this.lookupColumn(line, "group", headers),
                 name: this.lookupColumn(line, "name", headers),
                 username: this.lookupColumn(line, "username", headers),
                 url: this.lookupColumn(line, "url", headers),

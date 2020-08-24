@@ -4,6 +4,7 @@ import NotificationService from "./NotificationService";
 import * as Api from "../Services/ApiService";
 import { convertApiGroupToModel, convertToApiModelGroup } from "../Utilities/ModelConverter";
 import { CsvParser } from "../Utilities/CsvParser";
+import { CsvImporter } from "../Utilities/CsvImporter";
 
 class EntryService {
     readonly root = new Observable<PasswordGroup>(new PasswordGroup("root"));
@@ -135,17 +136,9 @@ class EntryService {
 
     public importFromCsv(csvInput: string) {
         const newRoot = this.root.get().clone();
-        const csvData = new CsvParser().parse(csvInput);
 
-        for(const entry of csvData) {
-            const newEntry = new PasswordEntry(newRoot);
-            newEntry.name = entry.name;
-            newEntry.username = entry.username;
-            newEntry.password = entry.password;
-            newEntry.url = entry.url;
-
-            newRoot.add(newEntry);
-        }
+        const importer = new CsvImporter();
+        importer.import(csvInput, newRoot);
 
         this.replaceRoot(newRoot);
     }
@@ -212,6 +205,10 @@ class EntryService {
 
     public findGroupById(id: string) : PasswordGroup | null {
         return this.root.get().findGroupById(id);
+    }
+
+    public findGroupByName(name: string) : PasswordGroup | null {
+        return this.root.get().findGroupByName(name);
     }
 
     public findEntryById(id: string) : PasswordEntry | null {
