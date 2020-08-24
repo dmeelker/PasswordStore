@@ -50,7 +50,7 @@ export function EntryDetails(props: EntryDetailsProp) {
     let rowIndex = 0;
 
     return (
-        <div style={{maxWidth: 600, width: "80vw"}}>
+        <div style={{maxWidth: 600, width: "100vw"}}>
             <form onSubmit={onFormSubmit}>
                 <div className="leading-8">
                     <FormRow index={rowIndex++} label="Name">
