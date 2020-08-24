@@ -9,9 +9,9 @@ interface ModalProps {
 export function Modal(props: ModalProps) {
     return (
         <Overlay opaque={true}>
-            <div className="m-auto bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="m-auto bg-white shadow overflow-hidden rounded-lg flex flex-col" style={{maxHeight: "100vh"}}>
                 {props.title && <ModalTitle title={props.title}/>}
-                <div className="p-2">{props.children}</div>
+                <div className="p-2 overflow-x-hidden overflow-y-auto">{props.children}</div>
             </div>
         </Overlay>
     );

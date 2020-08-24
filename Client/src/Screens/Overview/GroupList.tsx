@@ -53,6 +53,7 @@ export function GroupList(props: GroupListProps) {
 
   return (<div className="group-list overflow-x-hidden">
       <GroupNode 
+        isRoot={true}
         key={props.root.id}
         group={props.root}
         collapsible={false}
@@ -65,6 +66,7 @@ export function GroupList(props: GroupListProps) {
 }
 
 interface GroupNodeProps {
+  isRoot?: boolean;
   group: PasswordGroup;
   selectedGroup: PasswordGroup | null;
   collapsible: boolean;
@@ -138,13 +140,15 @@ function GroupNode(props: GroupNodeProps) {
   return (
     <div>
       <div className="leading-8 whitespace-no-wrap">
-        <button className="w-5 inline-block focus:outline-none" onClick={toggleCollapse}>
-          {collapsible && 
-            (collapsed ? <FaChevronRight/> : <FaChevronDown/>)
-          }
-        </button>
+        {!props.isRoot &&
+          <button className="text-xs md:text-base w-3 md:w-5 inline-block focus:outline-none" onClick={toggleCollapse}>
+            {collapsible && 
+              (collapsed ? <FaChevronRight/> : <FaChevronDown/>)
+            }
+          </button>
+        }
         <button 
-          className={"flex-1 md:px-2 text-left rounded hover:bg-green-200 focus:bg-green-200 focus:outline-none" + conditionalClass(props.selectedGroup === props.group, "bg-green-200")} 
+          className={"md:px-2 text-left rounded hover:bg-green-200 focus:bg-green-200 focus:outline-none" + conditionalClass(props.selectedGroup === props.group, "bg-green-200")} 
           draggable="true" 
           onDragStart={onDragStart} 
           onDragEnter={onDragEnter} 
@@ -155,7 +159,7 @@ function GroupNode(props: GroupNodeProps) {
           onDoubleClick={toggleCollapse}
           onContextMenu={onContextMenu}>{props.group.name} ({props.group.entries.length})</button>
       </div>
-      <div className={conditionalClass(collapsed, "hidden") + "pl-4"}>
+      <div className={conditionalClass(collapsed, "hidden") + conditionalClass(!props.isRoot, "pl-2 md:pl-4")}>
         {props.group.groups.map((child) =>
           <GroupNode 
             key={child.id} 

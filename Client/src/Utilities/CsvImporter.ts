@@ -11,7 +11,7 @@ export class CsvImporter {
             const parentGroup = this.ensureGroupsExist(groupNames, root);
 
             const newEntry = new PasswordEntry(parentGroup);
-            newEntry.name = entry.name;
+            newEntry.name = entry.title;
             newEntry.username = entry.username;
             newEntry.password = entry.password;
             newEntry.url = entry.url;

@@ -50,7 +50,7 @@ export function EntryDetails(props: EntryDetailsProp) {
     let rowIndex = 0;
 
     return (
-        <div style={{width: 600}}>
+        <div style={{maxWidth: 600, width: "80vw"}}>
             <form onSubmit={onFormSubmit}>
                 <div className="leading-8">
                     <FormRow index={rowIndex++} label="Name">
@@ -88,7 +88,7 @@ interface FormRowProps {
 
 function FormRow(props: FormRowProps) {
     return (
-        <div className={"px-4 py-5 grid grid-cols-4 gap-4" + alternatingClass(props.index, "bg-white", "bg-gray-100")}>
+        <div className={"py-1 md:px-4 md:py-5 grid grid-cols-4 gap-4" + alternatingClass(props.index, "bg-white", "bg-gray-100")}>
             <label className="">{props.label}</label>
             <div className="col-span-3">
                 {props.children}
