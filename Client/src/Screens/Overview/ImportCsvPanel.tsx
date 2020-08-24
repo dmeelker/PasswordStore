@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal } from "../../Components/Modal";
 import EntryService from "../../Model/EntryService";
+import { FaRegTired } from "react-icons/fa";
 
 interface ImportCsvPanelProps {
     onClose: () => void;
@@ -26,7 +27,7 @@ export function ImportCsvPanel(props: ImportCsvPanelProps) {
 
     return <Modal title="Import Keypass CSV">
         <div style={{width: "80vw", height: "80vh"}} className="flex flex-col">
-            {errorMessage && <div>{errorMessage}</div>}
+            {errorMessage && <div className="text-red-600"><FaRegTired className="inline-block"/> {errorMessage}</div>}
             <textarea 
                 className="flex-1 mb-2 resize-none border font-mono" 
                 value={textInput} 

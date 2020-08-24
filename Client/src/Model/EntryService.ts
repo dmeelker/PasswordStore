@@ -137,13 +137,12 @@ class EntryService {
         const newRoot = this.root.get().clone();
         const csvData = new CsvParser().parse(csvInput);
 
-        for(let i=1; i<csvData.length; i++) {
-            const line = csvData[i];
+        for(const entry of csvData) {
             const newEntry = new PasswordEntry(newRoot);
-            newEntry.name = line[1];
-            newEntry.username = line[2];
-            newEntry.password = line[3];
-            newEntry.url = line[4];
+            newEntry.name = entry.name;
+            newEntry.username = entry.username;
+            newEntry.password = entry.password;
+            newEntry.url = entry.url;
 
             newRoot.add(newEntry);
         }
