@@ -46,7 +46,7 @@ class TextReader {
 
 export interface CsvEntry {
     group: string;
-    name: string;
+    title: string;
     username: string;
     url: string;
     password: string;
@@ -64,7 +64,7 @@ export class CsvParser {
 
             items.push({
                 group: this.lookupColumn(line, "group", headers),
-                name: this.lookupColumn(line, "name", headers),
+                title: this.lookupColumn(line, "title", headers),
                 username: this.lookupColumn(line, "username", headers),
                 url: this.lookupColumn(line, "url", headers),
                 password: this.lookupColumn(line, "password", headers)
