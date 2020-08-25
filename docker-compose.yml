@@ -3,10 +3,10 @@ services:
   api:
     build: ./Backend/PublicApi
     ports:
-    - "5000:80"
+    - "5001:80"
     volumes:
     - ./Backend/PublicApi/datafiles:/app/datafiles
   frontend:
     build: ./Client
     ports:
-    - "80:80"
+    - "5000:80"

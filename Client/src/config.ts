@@ -5,7 +5,7 @@ const dev = {
 
 const prod = {
     TEST_BUILD: false,
-    API_URL: "http://dmeelker.hopto.org:5000"
+    API_URL: "https://dmeelker.hopto.org/passwords/api"
 };
 
 const config = process.env.REACT_APP_ENVIRONMENT == "production" ? prod : dev;
