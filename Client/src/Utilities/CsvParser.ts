@@ -92,7 +92,8 @@ export class CsvParser {
     }
 
     private throwIfColumnsMissing(columns: Map<string, number>) {
-        this.throwIfColumnMissing("name", columns);
+        this.throwIfColumnMissing("group", columns);
+        this.throwIfColumnMissing("title", columns);
         this.throwIfColumnMissing("username", columns);
         this.throwIfColumnMissing("url", columns);
         this.throwIfColumnMissing("password", columns);
