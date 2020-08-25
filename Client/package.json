@@ -1,5 +1,6 @@
 {
   "name": "password-store",
+  "homepage": "https://dmeelker.hopto.org/passwords/app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
