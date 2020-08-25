@@ -100,23 +100,23 @@ export function Overview() {
   }
 
   return (
-    <div className="md:p-4 h-full">
-      <div className="p-2 md:p-4 box-border shadow bg-white border-size h-full flex flex-col">
-        <div className="py-4">
+    <div className="h-full">
+      <div className="box-border shadow bg-white border-size h-full flex flex-col">
+        <div className="py-4 bg-green-500">
           <button className="btn-toolbar" onClick={createNewGroup}>Add Group</button>
           <button className="btn-toolbar" onClick={createNewEntry}>Add Entry</button>
           <button className="btn-toolbar" onClick={showImportCsvPanel}>Import</button>
           <input type="search" className="text-input" placeholder="search" value={searchTerms} onChange={(e) => setSearchTerms(e.target.value)} onInput={searchTermsChanged}/>
         </div>
         <div className="flex-1 flex overflow-hidden">
-          <div className="w-1/4 mr-4 overflow-y-auto">
+          <div className="w-1/4 overflow-y-auto bg-gray-800 text-gray-400 md:p-2">
             <GroupList 
               root={groups} 
               selectedGroup={selectedGroup} 
               onGroupSelected={groupSelected} 
             />
           </div>
-          <div className="flex-1 overflow-y-auto h-full">
+          <div className="flex-1 overflow-y-auto h-full p-2 md:p-4">
             <EntryTable 
               entries={searchResults ?? selectedGroup?.entries ?? []} 
               showGroup={searchResults !== undefined}

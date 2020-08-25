@@ -44,7 +44,7 @@ a:hover {
 }
 
 .btn-primary {
-    @apply bg-blue-200;
+    @apply bg-green-200;
     @apply px-3;
     @apply py-1;
     @apply rounded;
@@ -53,7 +53,7 @@ a:hover {
 }
 
 .btn-primary:hover {
-    @apply bg-blue-400;
+    @apply bg-green-400;
 }
 
 @media (min-width: 768px) { 

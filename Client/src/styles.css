@@ -677,8 +677,8 @@ a:hover {
 
 .btn-primary {
   --bg-opacity: 1;
-  background-color: #bee3f8;
-  background-color: rgba(190, 227, 248, var(--bg-opacity));
+  background-color: #c6f6d5;
+  background-color: rgba(198, 246, 213, var(--bg-opacity));
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   padding-top: 0.25rem;
@@ -693,8 +693,8 @@ a:hover {
 
 .btn-primary:hover {
   --bg-opacity: 1;
-  background-color: #63b3ed;
-  background-color: rgba(99, 179, 237, var(--bg-opacity));
+  background-color: #68d391;
+  background-color: rgba(104, 211, 145, var(--bg-opacity));
 }
 
 @media (min-width: 768px) {

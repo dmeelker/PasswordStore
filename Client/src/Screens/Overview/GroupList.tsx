@@ -139,7 +139,7 @@ function GroupNode(props: GroupNodeProps) {
 
   return (
     <div>
-      <div className="leading-8 whitespace-no-wrap">
+      <div className="md:leading-8 whitespace-no-wrap">
         {!props.isRoot &&
           <button className="text-xs md:text-base w-3 md:w-5 inline-block focus:outline-none" onClick={toggleCollapse}>
             {collapsible && 
@@ -148,7 +148,7 @@ function GroupNode(props: GroupNodeProps) {
           </button>
         }
         <button 
-          className={"md:px-2 text-left rounded hover:bg-green-200 focus:bg-green-200 focus:outline-none" + conditionalClass(props.selectedGroup === props.group, "bg-green-200")} 
+          className={"md:px-2 text-left rounded hover:bg-gray-200 hover:text-black focus:bg-gray-200 focus:text-black focus:outline-none" + conditionalClass(props.selectedGroup === props.group, "text-black bg-gray-200")} 
           draggable="true" 
           onDragStart={onDragStart} 
           onDragEnter={onDragEnter} 
