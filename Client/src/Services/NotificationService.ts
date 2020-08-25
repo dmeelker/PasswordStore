@@ -1,5 +1,5 @@
 import {v4 as uuid} from "uuid";
-import { Observable } from "./Observable";
+import { Observable } from "../Model/Observable";
 
 type ExpireCallback = (notification: Notification) => void;
 

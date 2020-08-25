@@ -1,5 +1,5 @@
 import { PasswordGroup, PasswordEntry } from "../Model/Model";
-import { CsvParser } from "./CsvParser";
+import { CsvParser, CsvEntry } from "./CsvParser";
 
 export class CsvImporter {
     public import(csv: string, root: PasswordGroup) {
@@ -7,25 +7,27 @@ export class CsvImporter {
 
         for(const entry of csvData) {
             const groupNames = this.parseGroups(entry.group);
-            console.log(groupNames);
             const parentGroup = this.ensureGroupsExist(groupNames, root);
-
-            const newEntry = new PasswordEntry(parentGroup);
-            newEntry.name = entry.name;
-            newEntry.username = entry.username;
-            newEntry.password = entry.password;
-            newEntry.url = entry.url;
+            const newEntry = this.createEntry(parentGroup, entry);
 
             parentGroup.add(newEntry);
         }
     }
     
+    private createEntry(parentGroup: PasswordGroup, entry: CsvEntry) {
+        const newEntry = new PasswordEntry(parentGroup);
+        newEntry.name = entry.name;
+        newEntry.username = entry.username;
+        newEntry.password = entry.password;
+        newEntry.url = entry.url;
+        return newEntry;
+    }
+
     private ensureGroupsExist(groupNames: string[], root: PasswordGroup): PasswordGroup {
         let parent = root;
 
         for(const groupName of groupNames) {
             const group = parent.findGroupByName(groupName);
-            console.log(group);
             
             if(group === null) {
                 const newGroup = new PasswordGroup(groupName);

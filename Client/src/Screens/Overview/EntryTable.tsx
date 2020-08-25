@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { PasswordEntry } from '../../Model/Model';
 import copy from 'copy-to-clipboard';
 import { FaEdit, FaCopy, FaTrashAlt } from 'react-icons/fa';
-import NotificationService from '../../Model/NotificationService';
+import NotificationService from '../../Services/NotificationService';
 import { conditionalClass } from '../../Utilities/RenderHelpers';
 import { useGlobalKeyboardListener } from '../../Utilities/Hooks';
 import { createDragModel, DragSource, serializeDragModel } from '../../Utilities/DragModel';

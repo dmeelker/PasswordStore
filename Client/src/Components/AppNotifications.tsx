@@ -1,5 +1,5 @@
 import React from 'react';
-import NotificationService from '../Model/NotificationService';
+import NotificationService from '../Services/NotificationService';
 import { useObservable } from '../Model/Observable';
 
 export function AppNotifications() {

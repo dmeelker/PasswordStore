@@ -1,9 +1,8 @@
 import { PasswordGroup, PasswordEntry } from "./Model";
 import { Observable } from "./Observable";
-import NotificationService from "./NotificationService";
+import NotificationService from "../Services/NotificationService";
 import * as Api from "../Services/ApiService";
 import { convertApiGroupToModel, convertToApiModelGroup } from "../Utilities/ModelConverter";
-import { CsvParser } from "../Utilities/CsvParser";
 import { CsvImporter } from "../Utilities/CsvImporter";
 
 class EntryService {
@@ -148,45 +147,6 @@ class EntryService {
         this.root.set(root);
     }
 
-    private generate() {
-        const root = new PasswordGroup("root");
-        let group1 = new PasswordGroup("Group 1");
-
-        for (let i = 1; i < 100; i++) {
-            let entry = new PasswordEntry(group1);
-            entry.name = "Google " + i;
-            entry.username = "piet";
-            entry.url = "https://www.google.com";
-            entry.password = "lala";
-            group1.entries.push(entry);
-        }
-        {
-            let entry = new PasswordEntry(group1);
-            entry.name = "Bank 2";
-            entry.username = "piet 2";
-            group1.entries.push(entry);
-        }
-        let group2 = new PasswordGroup("Group 2");
-        {
-            let entry = new PasswordEntry(group2);
-            entry.name = "Bank 3";
-            entry.username = "piet 3";
-            group2.entries.push(entry);
-        }
-
-        group1.addGroup(group2);
-
-        let group3 = new PasswordGroup("Group 3");
-
-        root.addGroup(group1);
-        root.addGroup(group3);
-
-        for (let i = 4; i < 100; i++)
-            root.addGroup(new PasswordGroup("Group " + i));
-
-        this.root.set(root);
-    }
-
     private replaceRoot(newRoot: PasswordGroup) {
         this.root.set(newRoot);
         this.modelChanged();
@@ -201,18 +161,6 @@ class EntryService {
         Api.savePasswords(document).then((result) => {
             NotificationService.showNotification("Changes saved");
         });
-    }
-
-    public findGroupById(id: string) : PasswordGroup | null {
-        return this.root.get().findGroupById(id);
-    }
-
-    public findGroupByName(name: string) : PasswordGroup | null {
-        return this.root.get().findGroupByName(name);
-    }
-
-    public findEntryById(id: string) : PasswordEntry | null {
-        return this.root.get().findEntryById(id);
     }
 
     public searchEntries(searchTerms: string): PasswordEntry[] {
