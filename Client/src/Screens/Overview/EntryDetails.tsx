@@ -3,6 +3,7 @@ import { PasswordEntry } from '../../Model/Model';
 import { GeneratePassword } from '../../Services/PasswordGenerator';
 import { alternatingClass } from '../../Utilities/RenderHelpers';
 import { FaEye } from 'react-icons/fa';
+import { Tabs, Tab } from '../../Components/Tabs';
 
 interface EntryDetailsProp {
     entry: PasswordEntry;
@@ -52,25 +53,32 @@ export function EntryDetails(props: EntryDetailsProp) {
     return (
         <div style={{maxWidth: 600, width: "100vw"}}>
             <form onSubmit={onFormSubmit}>
-                <div className="leading-8">
-                    <FormRow index={rowIndex++} label="Name">
-                        <input type="text" name="name" className="text-input w-full" defaultValue={props.entry.name} autoComplete="off" ref={firstField} required/>
-                    </FormRow>
+                <Tabs>
+                    <Tab title="Entry">
+                        <div className="leading-8">
+                            <FormRow index={rowIndex++} label="Name">
+                                <input type="text" name="name" className="text-input w-full" defaultValue={props.entry.name} autoComplete="off" ref={firstField} required/>
+                            </FormRow>
 
-                    <FormRow index={rowIndex++} label="URL">
-                        <input type="url" name="url" className="text-input w-full" defaultValue={props.entry.url} autoComplete="off"/>
-                    </FormRow> 
+                            <FormRow index={rowIndex++} label="URL">
+                                <input type="url" name="url" className="text-input w-full" defaultValue={props.entry.url} autoComplete="off"/>
+                            </FormRow> 
 
-                    <FormRow index={rowIndex++} label="User name">
-                        <input type="text" name="username" className="text-input w-full" defaultValue={props.entry.username} autoComplete="off" required/>
-                    </FormRow>
+                            <FormRow index={rowIndex++} label="User name">
+                                <input type="text" name="username" className="text-input w-full" defaultValue={props.entry.username} autoComplete="off" required/>
+                            </FormRow>
 
-                    <FormRow index={rowIndex++} label="Password">
-                        <input type={showPassword ? "text": "password"} name="password" className="text-input w-full" value={password} onChange={(event)=>{ setPassword(event.target.value)}} required/>
-                        <button type="button" className="btn" onClick={togglePasswordShown}><FaEye/></button>
-                        <button type="button" className="btn" onClick={generatePassword}>Generate</button>
-                    </FormRow> 
-                </div>
+                            <FormRow index={rowIndex++} label="Password">
+                                <input type={showPassword ? "text": "password"} name="password" className="text-input w-full" value={password} onChange={(event)=>{ setPassword(event.target.value)}} required/>
+                                <button type="button" className="btn" onClick={togglePasswordShown}><FaEye/></button>
+                                <button type="button" className="btn" onClick={generatePassword}>Generate</button>
+                            </FormRow> 
+                        </div>
+                    </Tab>
+                    <Tab title="History">
+                        History
+                    </Tab>
+                </Tabs>
                 <div className="text-right m-4">
                     <button type="submit" className="btn-primary">Save</button>
                     <button type="button" className="btn-secondary" onClick={cancelButtonPressed}>Cancel</button>
