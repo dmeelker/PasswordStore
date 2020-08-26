@@ -68,14 +68,22 @@ class EntryService {
 
     public removeGroup(groupId: string) {
         const newRoot = this.root.get().clone();
+        const recycleBin = newRoot.findRecycleBin();
         const group = newRoot.findGroupById(groupId);
 
         if (group === null)
             return;
+        
+        const groupInRecycleBin = recycleBin?.containsGroup(group);
 
         if(group.parent) {
             group.parent.removeGroup(group);
         }
+        
+        if (!groupInRecycleBin) {
+            recycleBin?.addGroup(group);
+        }
+
         this.replaceRoot(newRoot);
     }
 
@@ -120,17 +128,30 @@ class EntryService {
     public removeEntry(entryId: string) {
         const newRoot = this.root.get().clone();
         const entry = newRoot.findEntryById(entryId);
-        
-        if(entry === null)
+        const recycleBin = newRoot.findRecycleBin();
+
+        if (entry === null)
             return;
+
+        const entryInRecycleBin = recycleBin?.containsEntry(entry);
 
         const group = entry.group;
         group.remove(entry);
+
+        if (!entryInRecycleBin) {
+            recycleBin?.add(entry);
+        }
+
         this.replaceRoot(newRoot);
     }
 
-    public new(name: string) {        
-        this.replaceRoot(new PasswordGroup(name));
+    public new(name: string) {     
+        const newRoot = new PasswordGroup(name);
+        const recycleBin = new PasswordGroup("Recycle bin");
+        recycleBin.isRecycleBin = true;
+        newRoot.addGroup(recycleBin);
+
+        this.replaceRoot(newRoot);
     }
 
     public importFromCsv(csvInput: string) {

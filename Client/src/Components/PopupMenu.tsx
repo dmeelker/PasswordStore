@@ -10,7 +10,7 @@ interface PopupMenuProps {
 
 export function PopupMenu(props: PopupMenuProps) {
     return (<Overlay onClick={() => props.onHide()}>
-        <div className="absolute bg-white shadow" style={{left: props.x, top: props.y}}>
+        <div className="absolute bg-white shadow text-black" style={{left: props.x, top: props.y}}>
             {props.children}
         </div>
     </Overlay>);

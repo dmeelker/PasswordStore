@@ -6,6 +6,7 @@ export type EntryVisitor = (entry: PasswordEntry) => void;
 export class PasswordGroup {
     public instanceId = uuid();
     public id: string = uuid();
+    public isRecycleBin = false;
     public parent?: PasswordGroup;
     public groups = new Array<PasswordGroup>();
     public entries = new Array<PasswordEntry>();
@@ -16,6 +17,7 @@ export class PasswordGroup {
     public clone(): PasswordGroup {
         let clone = new PasswordGroup(this.name);
         clone.id = this.id;
+        clone.isRecycleBin = this.isRecycleBin;
         clone.parent = this.parent;
         clone.groups = this.groups.map((group) => group.clone());
         clone.entries = this.entries.map((entry) => entry.clone());
@@ -52,6 +54,14 @@ export class PasswordGroup {
             return true;
         } else {
             return this.groups.filter((g) => g.containsGroup(group)).length > 0;
+        }
+    }
+
+    public containsEntry(entry: PasswordEntry): boolean {
+        if (this.entries.indexOf(entry) !== -1) {
+            return true;
+        } else {
+            return this.groups.filter((g) => g.containsEntry(entry)).length > 0;
         }
     }
 
@@ -99,6 +109,19 @@ export class PasswordGroup {
         });
 
         return entry;
+    }
+
+    public findRecycleBin() : PasswordGroup | null {
+        let group: PasswordGroup | null = null;
+        const startGroup = this;
+
+        this.visitGroup(this, (g) => {
+            if(g.isRecycleBin) {
+                group = g;
+            }
+        });
+
+        return group;
     }
 
     public visitGroup(group: PasswordGroup, visitor: GroupVisitor) {

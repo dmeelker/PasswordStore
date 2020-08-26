@@ -16,6 +16,7 @@ export class Entry {
 export class Group {
     public id: string = "";
     public name: string = "";
+    public isRecycleBin: boolean = false;
     public entries: Entry[] = [];
     public groups: Group[] = [];
 }

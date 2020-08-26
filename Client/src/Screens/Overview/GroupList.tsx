@@ -27,7 +27,9 @@ export function GroupList(props: GroupListProps) {
   }
 
   function renderPopupMenu() {
-    if(popupState?.visible && popupState.group !== props.root) {
+    const showMenu = popupState?.visible && popupState.group !== props.root && !popupState.group.isRecycleBin;
+
+    if(popupState !== undefined && showMenu) {
       return <PopupMenu x={popupState.x} y={popupState.y} onHide={() => setPopupState(undefined)}>
         <MenuItem label="Rename" onClick={() => {renameGroupClicked(popupState.group)}}/>
         <MenuSeparator/>

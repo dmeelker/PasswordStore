@@ -4,6 +4,7 @@ import * as Model from "../Model/Model";
 export function convertApiGroupToModel(group: Api.Group) : Model.PasswordGroup {
     const modelGroup = new Model.PasswordGroup(group.name);
     modelGroup.id = group.id;
+    modelGroup.isRecycleBin = group.isRecycleBin;
     modelGroup.entries = group.entries.map((entry) => convertApiEntryToModel(entry, modelGroup));
     modelGroup.groups = group.groups.map(convertApiGroupToModel);
     return modelGroup;
@@ -24,6 +25,7 @@ export function convertToApiModelGroup(group: Model.PasswordGroup) : Api.Group {
     const apiGroup = new Api.Group();
     apiGroup.id = group.id;
     apiGroup.name = group.name;
+    apiGroup.isRecycleBin = group.isRecycleBin;
     apiGroup.entries = group.entries.map(convertToApiModelEntry);
     apiGroup.groups = group.groups.map(convertToApiModelGroup);
 
