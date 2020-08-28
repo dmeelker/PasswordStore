@@ -9,7 +9,7 @@ export function Tabs(props: TabsProps) {
     const [activeTab, setActiveTab] = useState(props.children[0].props.id);
 
     function tabClicked(tab: any, e: React.MouseEvent) {
-        setActiveTab(tab.props.title);
+        setActiveTab(tab.props.id);
         e.preventDefault();
     }
 
