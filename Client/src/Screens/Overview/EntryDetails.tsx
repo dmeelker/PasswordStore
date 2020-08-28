@@ -54,7 +54,7 @@ export function EntryDetails(props: EntryDetailsProp) {
         <div style={{maxWidth: 600, width: "100vw"}}>
             <form onSubmit={onFormSubmit}>
                 <Tabs>
-                    <Tab title="Entry">
+                    <Tab id="entry" title="Entry">
                         <div className="leading-8">
                             <FormRow index={rowIndex++} label="Name">
                                 <input type="text" name="name" className="text-input w-full" defaultValue={props.entry.name} autoComplete="off" ref={firstField} required/>
@@ -75,7 +75,7 @@ export function EntryDetails(props: EntryDetailsProp) {
                             </FormRow> 
                         </div>
                     </Tab>
-                    <Tab title="History">
+                    <Tab id="history" title="History">
                         History
                     </Tab>
                 </Tabs>
