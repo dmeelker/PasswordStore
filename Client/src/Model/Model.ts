@@ -142,6 +142,7 @@ export class PasswordEntry {
     public url: string = "";
     public username: string = "";
     public password: string = "";
+    public history: HistoryEntry[] = [];
 
     constructor(group: PasswordGroup) {
         this.group = group;
@@ -154,10 +155,50 @@ export class PasswordEntry {
         clone.url = this.url;
         clone.username = this.username;
         clone.password = this.password;
+        clone.history = this.history.map(item => item.clone());
         return clone;
     }
 
     public containsUrl(): boolean {
         return this.url != null && this.url.trim().length > 0;
     }
+
+    public addHistoryItem(entry: HistoryEntry) {
+        this.history.splice(0, 0, entry);
+    }
+
+    public hasChanged(other: PasswordEntry): boolean {
+        return this.name === other.name &&
+            this.url === other.url &&
+            this.username === other.username &&
+            this.password === other.password;
+    }
 };
+
+export class HistoryEntry {
+    public date: Date = new Date();
+    public name: string = "";
+    public username: string = "";
+    public url: string = "";
+    public password: string = "";
+
+    public static createFromEntry(entry: PasswordEntry): HistoryEntry {
+        const history = new HistoryEntry();
+        history.name = entry.name;
+        history.username = entry.username;
+        history.url = entry.url;
+        history.password = entry.password;
+
+        return history;
+    }
+
+    public clone(): HistoryEntry {
+        const clone = new HistoryEntry();
+        clone.date = this.date;
+        clone.name = this.name;
+        clone.username = this.username;
+        clone.url = this.url;
+        clone.password = this.password;
+        return clone;
+    }
+}

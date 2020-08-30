@@ -17,8 +17,19 @@ export function convertApiEntryToModel(entry: Api.Entry, parentGroup: Model.Pass
     modelEntry.url = entry.url;
     modelEntry.username = entry.username;
     modelEntry.password = entry.password;
+    modelEntry.history = entry.history?.map(convertApiHistoryToModel) ?? [];
 
     return modelEntry;
+}
+
+export function convertApiHistoryToModel(history: Api.History) : Model.HistoryEntry {
+    const modelHistory = new Model.HistoryEntry();
+    modelHistory.name = history.name;
+    modelHistory.url = history.url;
+    modelHistory.username = history.username;
+    modelHistory.password = history.password;
+
+    return modelHistory;
 }
 
 export function convertToApiModelGroup(group: Model.PasswordGroup) : Api.Group {
@@ -39,6 +50,17 @@ export function convertToApiModelEntry(entry: Model.PasswordEntry) : Api.Entry {
     apiEntry.url = entry.url;
     apiEntry.username = entry.username;
     apiEntry.password = entry.password;
+    apiEntry.history = entry.history.map(convertFromApiModelEntry);
 
     return apiEntry;
+}
+
+export function convertFromApiModelEntry(history: Model.HistoryEntry) : Api.History {
+    const apiHistory = new Api.History();
+    apiHistory.name = history.name;
+    apiHistory.url = history.url;
+    apiHistory.username = history.username;
+    apiHistory.password = history.password;
+
+    return apiHistory;
 }

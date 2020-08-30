@@ -1,4 +1,4 @@
-import { PasswordGroup, PasswordEntry } from "./Model";
+import { PasswordGroup, PasswordEntry, HistoryEntry } from "./Model";
 import { Observable } from "./Observable";
 import NotificationService from "../Services/NotificationService";
 import * as Api from "../Services/ApiService";
@@ -91,6 +91,8 @@ class EntryService {
         const newRoot = this.root.get().clone();
         const targetGroup = newRoot.findGroupById(groupId);
 
+        entry.addHistoryItem(HistoryEntry.createFromEntry(entry));
+
         if(targetGroup !== null) {
             targetGroup.add(entry);
             this.replaceRoot(newRoot);
@@ -104,6 +106,8 @@ class EntryService {
         if(originalEntry === null)
             return;
 
+        updatedEntry.addHistoryItem(HistoryEntry.createFromEntry(updatedEntry));
+        console.log(updatedEntry);
         const group = originalEntry.group;
         group.remove(originalEntry);
         group.add(updatedEntry);

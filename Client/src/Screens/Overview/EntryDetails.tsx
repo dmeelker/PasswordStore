@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { PasswordEntry } from '../../Model/Model';
+import { PasswordEntry, HistoryEntry } from '../../Model/Model';
 import { GeneratePassword } from '../../Services/PasswordGenerator';
-import { alternatingClass } from '../../Utilities/RenderHelpers';
+import { alternatingClass, conditionalClass } from '../../Utilities/RenderHelpers';
 import { FaEye } from 'react-icons/fa';
 import { Tabs, Tab } from '../../Components/Tabs';
 
@@ -54,7 +54,7 @@ export function EntryDetails(props: EntryDetailsProp) {
         <div style={{maxWidth: 600, width: "100vw"}}>
             <form onSubmit={onFormSubmit}>
                 <Tabs>
-                    <Tab id="entry" title="Entry">
+                    <Tab id="entry" title="Entry" isMain={true}>
                         <div className="leading-8">
                             <FormRow index={rowIndex++} label="Name">
                                 <input type="text" name="name" className="text-input w-full" defaultValue={props.entry.name} autoComplete="off" ref={firstField} required/>
@@ -75,8 +75,11 @@ export function EntryDetails(props: EntryDetailsProp) {
                             </FormRow> 
                         </div>
                     </Tab>
+                    <Tab id="stuff" title="Stuff!">
+                        Stuff
+                    </Tab>
                     <Tab id="history" title="History">
-                        History
+                        <HistoryPanel historyItems={entry.history}/>
                     </Tab>
                 </Tabs>
                 <div className="text-right m-4">
@@ -103,4 +106,74 @@ function FormRow(props: FormRowProps) {
             </div>
         </div>
     );
+}
+
+interface HistoryPanelProps {
+    historyItems: HistoryEntry[];
+}
+
+function HistoryPanel(props: HistoryPanelProps) {
+    const [selectedEntry, setSelectedEntry] = React.useState<HistoryEntry>();
+
+
+
+    return <div className="h-full flex flex-row">
+        <div className="border overflow-y-auto h-full mr-2" style={{minWidth: "12rem"}}>
+            {props.historyItems.length == 0 && "None"}
+            {props.historyItems.map(historyItem => 
+                <HistoryPanelEntry entry={historyItem} selected={historyItem == selectedEntry} onClick={() => setSelectedEntry(historyItem)}/>
+            )}
+        </div>
+        <div className="flex-1 border md:p-2">
+            {selectedEntry && <HistoryDetails entry={selectedEntry} />}
+        </div>
+    </div>;
+}
+
+interface HistoryPanelEntryProp {
+    entry: HistoryEntry;
+    selected: boolean;
+    onClick: (entry: HistoryEntry) => void;
+}
+
+function HistoryPanelEntry(props: HistoryPanelEntryProp) {
+    function FormatDateTime(date: Date) {
+        return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+    }
+
+    function pad(input: number, length: number = 2) {
+        let str: string = input.toString();
+
+        while (str.length < length) {
+            str = "0" + str;
+        }
+
+        return str;
+    }
+
+    function onClick(event: React.MouseEvent) {
+        props.onClick(props.entry);
+        event.preventDefault();
+    }
+
+    return <button onClick={onClick} className={"block px-2 md:leading-7 w-full text-left" + conditionalClass(props.selected, "bg-green-300")}>
+        {FormatDateTime(props.entry.date)}
+    </button>
+}
+
+interface HistoryDetailsProp {
+    entry: HistoryEntry;
+}
+
+function HistoryDetails(props: HistoryDetailsProp) {
+    return <dl>
+        <dt>Name</dt>
+        <dd><input type="text" value={props.entry.name}/></dd>
+
+        <dt>User name</dt>
+        <dd><input type="text" value={props.entry.username}/></dd>
+
+        <dt>Password</dt>
+        <dd><input type="password" value={props.entry.password}/></dd>
+    </dl>
 }

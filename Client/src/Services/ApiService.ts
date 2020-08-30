@@ -11,6 +11,14 @@ export class Entry {
     public url: string = "";
     public username: string = "";
     public password: string = "";
+    public history: History[] = [];
+}
+
+export class History {
+    public name: string = "";
+    public url: string = "";
+    public username: string = "";
+    public password: string = "";
 }
 
 export class Group {
