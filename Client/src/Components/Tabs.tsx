@@ -1,5 +1,8 @@
 import { useState, useEffect, CSSProperties } from "react";
 import React from "react";
+import { conditionalClass } from "../Utilities/RenderHelpers";
+import { useDocumentResizeHandler } from "../Utilities/Hooks";
+import { forEachChild, findDirectDescendantWithClass } from "../Utilities/DomHelpers";
 
 interface TabsProps {
     children: any;
@@ -7,44 +10,37 @@ interface TabsProps {
 
 export function Tabs(props: TabsProps) {
     const [activeTab, setActiveTab] = useState(props.children[0].props.id);
+    const tabContainerRev = React.useRef<HTMLDivElement>(null);
 
-    const tabDivs = new Map<any, React.RefObject<HTMLDivElement>>();
+    function findMainTabDiv() {
+        if (!tabContainerRev.current)
+            return null;
 
-    for(let child of props.children) {
-        tabDivs.set(child, React.useRef<HTMLDivElement>(null));
+        return findDirectDescendantWithClass(tabContainerRev.current, "main-tab");
     }
 
     function resizeTabs() {
-        const mainTab = props.children.filter((tab: any) => tab.props.isMain)[0] ?? props.children[0];
-        const mainTabDiv = tabDivs.get(mainTab)?.current;
+        if (!tabContainerRev.current)
+            return;
 
-        tabDivs.forEach((tab, key) => {
-            if(tab.current && key !== mainTab) {
-                tab.current.style.height = "1px";
+        const mainDiv = tabContainerRev.current;
+        const mainTabDiv = findMainTabDiv() ?? mainDiv.children[0];
+        
+        forEachChild(mainDiv, (tabDiv) => {
+            if (tabDiv !== mainTabDiv) {
+                tabDiv.style.height = "1px";
             }
         });
 
-        tabDivs.forEach((tab, key) => {
-            if(key !== mainTab) {
-                if(tab.current) {
-                    tab.current.style.height = mainTabDiv?.clientHeight + "px";
-                }
+        forEachChild(mainDiv, (tabDiv) => {
+            if (tabDiv !== mainTabDiv) {
+                tabDiv.style.height = mainTabDiv.clientHeight + "px";
             }
-        });
+        })
     }
 
-    useEffect(() => {
-        const resizeHandler = (e: UIEvent) => {
-            resizeTabs();
-        };
-        window.addEventListener("resize", resizeHandler);
-
-        resizeTabs();
-
-        return () => {
-            window.removeEventListener("resize", resizeHandler);
-        };
-    });
+    useDocumentResizeHandler(resizeTabs);
+    useEffect(resizeTabs);
 
     function tabClicked(tab: any, e: React.MouseEvent) {
         setActiveTab(tab.props.id);
@@ -61,15 +57,14 @@ export function Tabs(props: TabsProps) {
                 })
             }
         </div>
-        <div className="flex-1 border" style={{display: "grid"}}>
+        <div className="flex-1 border" style={{display: "grid"}} ref={tabContainerRev}>
             {React.Children.map(props.children, (child) => {
                     const style: CSSProperties = {
                         gridRowStart: 1, 
                         gridColumnStart: 1, 
                         visibility: activeTab === child.props.id ? "visible" : "hidden"
                     };
-
-                return <div ref={tabDivs.get(child) as React.RefObject<HTMLDivElement>} style={style} className="overflow-hidden p-0 md:p-2">
+                return <div style={style} className={"overflow-hidden p-0 md:p-2" + conditionalClass(child.props.isMain, "main-tab")}>
                     {React.cloneElement(child)}
                 </div>;
             })

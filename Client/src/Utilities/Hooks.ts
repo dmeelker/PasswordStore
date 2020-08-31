@@ -9,3 +9,16 @@ export function useGlobalKeyboardListener(eventHandler: (event: KeyboardEvent) =
         };
     });
 }
+
+export function useDocumentResizeHandler(handler: () => void) {
+    React.useEffect(() => {
+        const resizeHandler = (e: UIEvent) => {
+            handler();
+        };
+        window.addEventListener("resize", resizeHandler);
+
+        return () => {
+            window.removeEventListener("resize", resizeHandler);
+        };
+    });
+}
