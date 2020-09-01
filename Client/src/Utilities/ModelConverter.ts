@@ -19,16 +19,23 @@ export function convertApiEntryToModel(entry: Api.Entry, parentGroup: Model.Pass
     modelEntry.password = entry.password;
     modelEntry.history = entry.history?.map(convertApiHistoryToModel) ?? [];
 
+    if (entry.history) {
+        for (let i=modelEntry.history.length-2; i>=0; i--) {
+            modelEntry.history[i].updateChangeSummary(modelEntry.history[i+1])
+        }
+    }
+
     return modelEntry;
 }
 
 export function convertApiHistoryToModel(history: Api.History) : Model.HistoryEntry {
     const modelHistory = new Model.HistoryEntry();
+    modelHistory.date = history.date;
     modelHistory.name = history.name;
     modelHistory.url = history.url;
     modelHistory.username = history.username;
     modelHistory.password = history.password;
-
+    console.log(typeof(modelHistory.date));
     return modelHistory;
 }
 
@@ -57,10 +64,11 @@ export function convertToApiModelEntry(entry: Model.PasswordEntry) : Api.Entry {
 
 export function convertFromApiModelEntry(history: Model.HistoryEntry) : Api.History {
     const apiHistory = new Api.History();
+    apiHistory.date = history.date;
     apiHistory.name = history.name;
     apiHistory.url = history.url;
     apiHistory.username = history.username;
     apiHistory.password = history.password;
-
+    
     return apiHistory;
 }

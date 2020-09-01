@@ -12,6 +12,10 @@ html {
     }
 }
 
+button:focus {
+    /* @apply outline-none; */
+    outline-color: #68d391;
+}
 
 /* Links */
 a {

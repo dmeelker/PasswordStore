@@ -75,9 +75,6 @@ export function EntryDetails(props: EntryDetailsProp) {
                             </FormRow> 
                         </div>
                     </Tab>
-                    <Tab id="stuff" title="Stuff!">
-                        Stuff
-                    </Tab>
                     <Tab id="history" title="History">
                         <HistoryPanel historyItems={entry.history}/>
                     </Tab>
@@ -121,7 +118,7 @@ function HistoryPanel(props: HistoryPanelProps) {
         <div className="border overflow-y-auto h-full mr-2" style={{minWidth: "12rem"}}>
             {props.historyItems.length == 0 && "None"}
             {props.historyItems.map(historyItem => 
-                <HistoryPanelEntry entry={historyItem} selected={historyItem == selectedEntry} onClick={() => setSelectedEntry(historyItem)}/>
+                <HistoryPanelEntry key={historyItem.id} entry={historyItem} selected={historyItem == selectedEntry} onClick={() => setSelectedEntry(historyItem)}/>
             )}
         </div>
         <div className="flex-1 border md:p-2">
@@ -156,8 +153,8 @@ function HistoryPanelEntry(props: HistoryPanelEntryProp) {
         event.preventDefault();
     }
 
-    return <button onClick={onClick} className={"block px-2 md:leading-7 w-full text-left" + conditionalClass(props.selected, "bg-green-300")}>
-        {FormatDateTime(props.entry.date)}
+    return <button onClick={onClick} className={"block px-2 md:py-1 w-full text-left" + conditionalClass(props.selected, "bg-green-300")}>
+        {FormatDateTime(props.entry.date)} {props.entry.changes && <><div className="text-sm">Changed { props.entry.changes}</div></>}
     </button>
 }
 
@@ -167,13 +164,28 @@ interface HistoryDetailsProp {
 
 function HistoryDetails(props: HistoryDetailsProp) {
     return <dl>
-        <dt>Name</dt>
-        <dd><input type="text" value={props.entry.name}/></dd>
+        <HistoryDetailsEntry title="Name">
+            <input type="text" value={props.entry.name} readOnly/>
+        </HistoryDetailsEntry>
 
-        <dt>User name</dt>
-        <dd><input type="text" value={props.entry.username}/></dd>
+        <HistoryDetailsEntry title="User name">
+            <input type="text" value={props.entry.username} readOnly/>
+        </HistoryDetailsEntry>
 
-        <dt>Password</dt>
-        <dd><input type="password" value={props.entry.password}/></dd>
+        <HistoryDetailsEntry title="Password">
+            <input type="password" value={props.entry.password} readOnly/>
+        </HistoryDetailsEntry>
     </dl>
+}
+
+interface HistoryDetailsEntryProps {
+    title: string;
+    children: any;
+}
+
+function HistoryDetailsEntry(props: HistoryDetailsEntryProps) {
+    return <>
+        <dt className="text-gray-500">{props.title}</dt>
+        <dd className="mb-2">{props.children}</dd>
+    </>;
 }

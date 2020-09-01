@@ -164,6 +164,10 @@ export class PasswordEntry {
     }
 
     public addHistoryItem(entry: HistoryEntry) {
+        if(this.history.length > 0) {
+            entry.updateChangeSummary(this.history[0]);
+        }
+
         this.history.splice(0, 0, entry);
     }
 
@@ -176,11 +180,14 @@ export class PasswordEntry {
 };
 
 export class HistoryEntry {
+    public id: string = uuid();
     public date: Date = new Date();
     public name: string = "";
     public username: string = "";
     public url: string = "";
     public password: string = "";
+    
+    public changes: string | null = "";
 
     public static createFromEntry(entry: PasswordEntry): HistoryEntry {
         const history = new HistoryEntry();
@@ -194,11 +201,34 @@ export class HistoryEntry {
 
     public clone(): HistoryEntry {
         const clone = new HistoryEntry();
+        clone.id = this.id;
         clone.date = this.date;
         clone.name = this.name;
         clone.username = this.username;
         clone.url = this.url;
         clone.password = this.password;
+        clone.changes = this.changes;
         return clone;
+    }
+
+    public updateChangeSummary(previousEntry: HistoryEntry) {
+        const changedFields = new Array<string>();
+
+        if (this.name !== previousEntry.name)
+            changedFields.push("name");
+
+        if (this.username !== previousEntry.username)
+            changedFields.push("user name");
+
+        if (this.url !== previousEntry.url)
+            changedFields.push("url");
+
+        if (this.password !== previousEntry.password)
+            changedFields.push("password");
+        console.log(changedFields);
+        if (changedFields.length > 0)
+            this.changes = changedFields.join(", ");
+        else
+            this.changes = null;
     }
 }
