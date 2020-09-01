@@ -15,7 +15,7 @@ export class Entry {
 }
 
 export class History {
-    public date: Date = new Date();
+    public date: string = "";
     public name: string = "";
     public url: string = "";
     public username: string = "";

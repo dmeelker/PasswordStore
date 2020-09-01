@@ -30,7 +30,7 @@ export function convertApiEntryToModel(entry: Api.Entry, parentGroup: Model.Pass
 
 export function convertApiHistoryToModel(history: Api.History) : Model.HistoryEntry {
     const modelHistory = new Model.HistoryEntry();
-    modelHistory.date = history.date;
+    modelHistory.date = new Date(history.date);
     modelHistory.name = history.name;
     modelHistory.url = history.url;
     modelHistory.username = history.username;
@@ -64,7 +64,7 @@ export function convertToApiModelEntry(entry: Model.PasswordEntry) : Api.Entry {
 
 export function convertFromApiModelEntry(history: Model.HistoryEntry) : Api.History {
     const apiHistory = new Api.History();
-    apiHistory.date = history.date;
+    apiHistory.date = history.date.toISOString();
     apiHistory.name = history.name;
     apiHistory.url = history.url;
     apiHistory.username = history.username;
