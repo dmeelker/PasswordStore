@@ -166,6 +166,8 @@ export class PasswordEntry {
     public addHistoryItem(entry: HistoryEntry) {
         if(this.history.length > 0) {
             entry.updateChangeSummary(this.history[0]);
+        } else {
+            entry.updateChangeSummary(null);
         }
 
         this.history.splice(0, 0, entry);
@@ -211,24 +213,28 @@ export class HistoryEntry {
         return clone;
     }
 
-    public updateChangeSummary(previousEntry: HistoryEntry) {
-        const changedFields = new Array<string>();
+    public updateChangeSummary(previousEntry: HistoryEntry | null) {
+        if (previousEntry === null) {
+            this.changes = "First version";
+            return;
+        } else {
+            const changedFields = new Array<string>();
+            if (this.name !== previousEntry.name)
+                changedFields.push("name");
 
-        if (this.name !== previousEntry.name)
-            changedFields.push("name");
+            if (this.username !== previousEntry.username)
+                changedFields.push("user name");
 
-        if (this.username !== previousEntry.username)
-            changedFields.push("user name");
+            if (this.url !== previousEntry.url)
+                changedFields.push("url");
 
-        if (this.url !== previousEntry.url)
-            changedFields.push("url");
-
-        if (this.password !== previousEntry.password)
-            changedFields.push("password");
-        console.log(changedFields);
-        if (changedFields.length > 0)
-            this.changes = changedFields.join(", ");
-        else
-            this.changes = null;
+            if (this.password !== previousEntry.password)
+                changedFields.push("password");
+            
+            if (changedFields.length > 0)
+                this.changes = "Changed " + changedFields.join(", ");
+            else
+                this.changes = null;
+        }
     }
 }

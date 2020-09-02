@@ -13,6 +13,13 @@ interface EntryDetailsProp {
     cancelPressed: () => any;
 }
 
+interface FormValues {
+    name: string;
+    url: string;
+    username: string;
+    password: string;
+}
+
 export function EntryDetails(props: EntryDetailsProp) {
     const entry = props.entry;
     const [showPassword, setShowPassword] = React.useState(false);
@@ -26,13 +33,38 @@ export function EntryDetails(props: EntryDetailsProp) {
     function onFormSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         
-        const formData = new FormData(event.target as HTMLFormElement);
-        entry.name = formData.get("name") as string;
-        entry.url = formData.get("url") as string;
-        entry.username = formData.get("username") as string;
-        entry.password = formData.get("password") as string;
-        props.savePressed();
+        const formValues = getFormValues(event.target as HTMLFormElement);
+        if (!valuesEqualEntry(formValues, entry)) {
+            updateEntry(entry, formValues);
+            props.savePressed();
+        } else {
+            props.cancelPressed();
+        }
     };
+
+    function getFormValues(form: HTMLFormElement): FormValues {
+        const formData = new FormData(form);
+        return {
+            name: formData.get("name") as string,
+            url: formData.get("url") as string,
+            username: formData.get("username") as string,
+            password: formData.get("password") as string
+        };
+    }
+
+    function valuesEqualEntry(values: FormValues, entry: PasswordEntry): boolean {
+        return entry.name === values.name &&
+            entry.url === values.url &&
+            entry.username === values.username &&
+            entry.password === values.password;
+    }
+
+    function updateEntry(entry: PasswordEntry, formValues: FormValues) {
+        entry.name = formValues.name;
+        entry.url = formValues.url;
+        entry.username = formValues.username;
+        entry.password = formValues.password;
+    }
 
     function cancelButtonPressed(event: React.MouseEvent) {
         props.cancelPressed();
@@ -145,7 +177,7 @@ function HistoryPanelEntry(props: HistoryPanelEntryProp) {
     return <>
         {FormatDateTime(props.entry.date)} 
         {props.entry.changes && <>
-            <div className="text-sm">Changed {props.entry.changes}</div>
+            <div className="text-sm">{props.entry.changes}</div>
         </>}
     </>;
 }
