@@ -174,4 +174,12 @@ td {
     }
 }
 
+fieldset {
+    @apply bg-gray-200;
+}
+
+fieldset > div {
+    @apply p-2;
+}
+
 @import "tailwindcss/utilities";

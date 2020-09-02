@@ -6,8 +6,8 @@ interface FieldSetProps {
 }
 
 export function FieldSet(props: FieldSetProps) {
-    return <fieldset className="bg-gray-200">
+    return <fieldset>
         <legend>{props.title}</legend>
-        <div className="p-2">{props.children}</div>
+        <div>{props.children}</div>
     </fieldset>;
 }

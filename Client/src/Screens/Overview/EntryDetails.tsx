@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { PasswordEntry, HistoryEntry } from '../../Model/Model';
-import { GeneratePassword } from '../../Services/PasswordGenerator';
 import { alternatingClass, conditionalClass } from '../../Utilities/RenderHelpers';
 import { FaEye } from 'react-icons/fa';
 import { Tabs, Tab } from '../../Components/Tabs';
