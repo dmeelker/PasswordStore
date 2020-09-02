@@ -4,6 +4,8 @@ import { GeneratePassword } from '../../Services/PasswordGenerator';
 import { alternatingClass, conditionalClass } from '../../Utilities/RenderHelpers';
 import { FaEye } from 'react-icons/fa';
 import { Tabs, Tab } from '../../Components/Tabs';
+import { ListView, ListViewItem } from '../../Components/ListView';
+import { stringify } from 'querystring';
 
 interface EntryDetailsProp {
     entry: PasswordEntry;
@@ -112,15 +114,15 @@ interface HistoryPanelProps {
 function HistoryPanel(props: HistoryPanelProps) {
     const [selectedEntry, setSelectedEntry] = React.useState<HistoryEntry>();
 
-
-
     return <div className="h-full flex flex-row">
-        <div className="border overflow-y-auto h-full mr-2" style={{minWidth: "12rem"}}>
-            {props.historyItems.length == 0 && "None"}
+        <ListView>
             {props.historyItems.map(historyItem => 
-                <HistoryPanelEntry key={historyItem.id} entry={historyItem} selected={historyItem == selectedEntry} onClick={() => setSelectedEntry(historyItem)}/>
+                <ListViewItem key={historyItem.id} selected={historyItem == selectedEntry} onClick={() => setSelectedEntry(historyItem)}>
+                    <HistoryPanelEntry entry={historyItem}/>
+                </ListViewItem>
             )}
-        </div>
+        </ListView>
+
         <div className="flex-1 border md:p-2">
             {selectedEntry && <HistoryDetails entry={selectedEntry} />}
         </div>
@@ -129,8 +131,6 @@ function HistoryPanel(props: HistoryPanelProps) {
 
 interface HistoryPanelEntryProp {
     entry: HistoryEntry;
-    selected: boolean;
-    onClick: (entry: HistoryEntry) => void;
 }
 
 function HistoryPanelEntry(props: HistoryPanelEntryProp) {
@@ -139,23 +139,15 @@ function HistoryPanelEntry(props: HistoryPanelEntryProp) {
     }
 
     function pad(input: number, length: number = 2) {
-        let str: string = input.toString();
-
-        while (str.length < length) {
-            str = "0" + str;
-        }
-
-        return str;
+        return "0".repeat(length - input.toString().length) + input;
     }
 
-    function onClick(event: React.MouseEvent) {
-        props.onClick(props.entry);
-        event.preventDefault();
-    }
-
-    return <button onClick={onClick} className={"block px-2 md:py-1 w-full text-left" + conditionalClass(props.selected, "bg-green-300")}>
-        {FormatDateTime(props.entry.date)} {props.entry.changes && <><div className="text-sm">Changed { props.entry.changes}</div></>}
-    </button>
+    return <>
+        {FormatDateTime(props.entry.date)} 
+        {props.entry.changes && <>
+            <div className="text-sm">Changed {props.entry.changes}</div>
+        </>}
+    </>;
 }
 
 interface HistoryDetailsProp {
