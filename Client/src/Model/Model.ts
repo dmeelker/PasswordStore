@@ -172,13 +172,6 @@ export class PasswordEntry {
 
         this.history.splice(0, 0, entry);
     }
-
-    public hasChanged(other: PasswordEntry): boolean {
-        return this.name === other.name &&
-            this.url === other.url &&
-            this.username === other.username &&
-            this.password === other.password;
-    }
 };
 
 export class HistoryEntry {

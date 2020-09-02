@@ -6,6 +6,7 @@ import { FaEye } from 'react-icons/fa';
 import { Tabs, Tab } from '../../Components/Tabs';
 import { ListView, ListViewItem } from '../../Components/ListView';
 import { stringify } from 'querystring';
+import { PasswordGeneratorDialog } from './PasswordGeneratorDialog';
 
 interface EntryDetailsProp {
     entry: PasswordEntry;
@@ -24,6 +25,7 @@ export function EntryDetails(props: EntryDetailsProp) {
     const entry = props.entry;
     const [showPassword, setShowPassword] = React.useState(false);
     const [password, setPassword] = React.useState(entry.password);
+    const [showPasswordGenerator, setShowPasswordGenerator] = React.useState(false);
     const firstField = React.useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -77,8 +79,9 @@ export function EntryDetails(props: EntryDetailsProp) {
     };
 
     function generatePassword(event: React.MouseEvent) {
-        const password = GeneratePassword({minLength: 32});
-        setPassword(password);
+        setShowPasswordGenerator(true);
+        // const password = GeneratePassword({minLength: 32});
+        // setPassword(password);
         event.preventDefault();
     };
 
@@ -118,6 +121,8 @@ export function EntryDetails(props: EntryDetailsProp) {
                     <button type="button" className="btn-secondary" onClick={cancelButtonPressed}>Cancel</button>
                 </div>
             </form>
+
+            {showPasswordGenerator && <PasswordGeneratorDialog/>}
         </div>
     );
 }
