@@ -651,8 +651,8 @@ a:hover {
 
 .btn {
   --bg-opacity: 1;
-  background-color: #edf2f7;
-  background-color: rgba(237, 242, 247, var(--bg-opacity));
+  background-color: #e2e8f0;
+  background-color: rgba(226, 232, 240, var(--bg-opacity));
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   padding-top: 0.25rem;
@@ -661,8 +661,6 @@ a:hover {
   --border-opacity: 1;
   border-color: #f7fafc;
   border-color: rgba(247, 250, 252, var(--border-opacity));
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
 }
 
 .btn:hover {
@@ -692,8 +690,6 @@ a:hover {
   --border-opacity: 1;
   border-color: #f7fafc;
   border-color: rgba(247, 250, 252, var(--border-opacity));
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
 }
 
 .btn-primary:hover {
@@ -713,8 +709,8 @@ a:hover {
 
 .btn-secondary {
   --bg-opacity: 1;
-  background-color: #edf2f7;
-  background-color: rgba(237, 242, 247, var(--bg-opacity));
+  background-color: #e2e8f0;
+  background-color: rgba(226, 232, 240, var(--bg-opacity));
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   padding-top: 0.25rem;
@@ -723,8 +719,6 @@ a:hover {
   --border-opacity: 1;
   border-color: #f7fafc;
   border-color: rgba(247, 250, 252, var(--border-opacity));
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
 }
 
 .btn-secondary:hover {
@@ -790,6 +784,17 @@ a:hover {
   --bg-opacity: 1;
   background-color: #cbd5e0;
   background-color: rgba(203, 213, 224, var(--bg-opacity));
+}
+
+.button-bar-right {
+  text-align: right;
+}
+
+.button-bar-right .btn,
+.button-bar-right .btn-primary,
+.button-bar-right .btn-secondary {
+  margin: 0;
+  margin-left: 0.5rem;
 }
 
 /* Forms */

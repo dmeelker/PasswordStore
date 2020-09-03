@@ -25,20 +25,20 @@ export function ImportCsvPanel(props: ImportCsvPanelProps) {
         props.onClose();
     }
 
-    return <Modal title="Import Keypass CSV">
+    return <Modal title="Import Keypass CSV" 
+                buttonBar={<>
+                    <button className="btn-primary" onClick={importButtonPressed}>Import</button>
+                    <button className="btn-secondary" onClick={cancelButtonPressed}>Cancel</button>
+                </>}>
         <div style={{width: "80vw", height: "80vh"}} className="flex flex-col">
             {errorMessage && <div className="text-red-600"><FaRegTired className="inline-block"/> {errorMessage}</div>}
             <textarea 
-                className="flex-1 mb-2 resize-none border font-mono" 
+                className="flex-1 resize-none border font-mono" 
                 value={textInput} 
                 onChange={(e) => setTextInput(e.target.value)} 
                 placeholder="Paste keypass CSV here"
                 wrap="off"
                 spellCheck={false}></textarea>
-            <div className="text-right">
-                <button className="btn-primary" onClick={importButtonPressed}>Import</button>
-                <button className="btn-secondary" onClick={cancelButtonPressed}>Cancel</button>
-            </div>
         </div>
     </Modal>    
 }

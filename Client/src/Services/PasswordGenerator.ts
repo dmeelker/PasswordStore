@@ -2,10 +2,11 @@ import { randomWord } from "./EnglishWords";
 
 export interface Settings {
     minLength: number;
+    includeSpecialCharacters?: boolean;
 };
 
 export function generateRandomPassword(settings: Settings): string {
-    const availableCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const availableCharacters = getAvailableCharacters(settings);
     let password = "";
 
     for (let i=0; i<settings.minLength; i++) {
@@ -13,6 +14,15 @@ export function generateRandomPassword(settings: Settings): string {
     }
 
     return password;
+}
+
+function getAvailableCharacters(settings: Settings) {
+    let availableCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    if (settings.includeSpecialCharacters) {
+        availableCharacters = availableCharacters + "`~!@#$%^&*()-=_+[]{};':\",.<>/?";
+    }
+    return availableCharacters;
 }
 
 export function generateRandomWords(minLength: number): string {

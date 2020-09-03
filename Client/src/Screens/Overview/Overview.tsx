@@ -93,9 +93,7 @@ export function Overview() {
   let entryDetails;
   if (openEntry) {
     entryDetails = (
-      <Modal title="Entry Details">
-        <EntryDetails entry={openEntry} savePressed={completeEdit} cancelPressed={cancelEdit}/>
-      </Modal>
+      <EntryDetails entry={openEntry} savePressed={completeEdit} cancelPressed={cancelEdit}/>
     );
   }
 

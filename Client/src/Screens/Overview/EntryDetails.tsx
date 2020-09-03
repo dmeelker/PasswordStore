@@ -6,6 +6,7 @@ import { Tabs, Tab } from '../../Components/Tabs';
 import { ListView, ListViewItem } from '../../Components/ListView';
 import { stringify } from 'querystring';
 import { PasswordGeneratorDialog } from './PasswordGeneratorDialog';
+import { Modal } from '../../Components/Modal';
 
 interface EntryDetailsProp {
     entry: PasswordEntry;
@@ -87,42 +88,44 @@ export function EntryDetails(props: EntryDetailsProp) {
     let rowIndex = 0;
 
     return (
-        <div style={{maxWidth: 600, width: "100vw"}}>
-            <form onSubmit={onFormSubmit}>
-                <Tabs>
-                    <Tab id="entry" title="Entry" isMain={true}>
-                        <div className="leading-8">
-                            <FormRow index={rowIndex++} label="Name">
-                                <input type="text" name="name" className="text-input w-full" defaultValue={props.entry.name} autoComplete="off" ref={firstField} required/>
-                            </FormRow>
+        <Modal title="Entry Details"
+            buttonBar={<>
+                <button type="submit" className="btn-primary">Save</button>
+                <button type="button" className="btn-secondary" onClick={cancelButtonPressed}>Cancel</button>
+            </>}>
+            <div style={{maxWidth: 600, width: "100vw"}}>
+                <form onSubmit={onFormSubmit}>
+                    <Tabs>
+                        <Tab id="entry" title="Entry" isMain={true}>
+                            <div className="leading-8">
+                                <FormRow index={rowIndex++} label="Name">
+                                    <input type="text" name="name" className="text-input w-full" defaultValue={props.entry.name} autoComplete="off" ref={firstField} required/>
+                                </FormRow>
 
-                            <FormRow index={rowIndex++} label="URL">
-                                <input type="url" name="url" className="text-input w-full" defaultValue={props.entry.url} autoComplete="off"/>
-                            </FormRow> 
+                                <FormRow index={rowIndex++} label="URL">
+                                    <input type="url" name="url" className="text-input w-full" defaultValue={props.entry.url} autoComplete="off"/>
+                                </FormRow> 
 
-                            <FormRow index={rowIndex++} label="User name">
-                                <input type="text" name="username" className="text-input w-full" defaultValue={props.entry.username} autoComplete="off" required/>
-                            </FormRow>
+                                <FormRow index={rowIndex++} label="User name">
+                                    <input type="text" name="username" className="text-input w-full" defaultValue={props.entry.username} autoComplete="off" required/>
+                                </FormRow>
 
-                            <FormRow index={rowIndex++} label="Password">
-                                <input type={showPassword ? "text": "password"} name="password" className="text-input w-full" value={password} onChange={(event)=>{ setPassword(event.target.value)}} required/>
-                                <button type="button" className="btn" onClick={togglePasswordShown}><FaEye/></button>
-                                <button type="button" className="btn" onClick={generatePassword}>Generate</button>
-                            </FormRow> 
-                        </div>
-                    </Tab>
-                    <Tab id="history" title="History">
-                        <HistoryPanel historyItems={entry.history}/>
-                    </Tab>
-                </Tabs>
-                <div className="text-right m-4">
-                    <button type="submit" className="btn-primary">Save</button>
-                    <button type="button" className="btn-secondary" onClick={cancelButtonPressed}>Cancel</button>
-                </div>
-            </form>
+                                <FormRow index={rowIndex++} label="Password">
+                                    <input type={showPassword ? "text": "password"} name="password" className="text-input w-full" value={password} onChange={(event)=>{ setPassword(event.target.value)}} required/>
+                                    <button type="button" className="btn" onClick={togglePasswordShown}><FaEye/></button>
+                                    <button type="button" className="btn" onClick={generatePassword}>Generate</button>
+                                </FormRow> 
+                            </div>
+                        </Tab>
+                        <Tab id="history" title="History">
+                            <HistoryPanel historyItems={entry.history}/>
+                        </Tab>
+                    </Tabs>
+                </form>
 
-            {showPasswordGenerator && <PasswordGeneratorDialog/>}
-        </div>
+                {showPasswordGenerator && <PasswordGeneratorDialog onPasswordSelected={(password) => setPassword(password)} onClose={() => setShowPasswordGenerator(false)}/>}
+            </div>
+        </Modal>
     );
 }
 
