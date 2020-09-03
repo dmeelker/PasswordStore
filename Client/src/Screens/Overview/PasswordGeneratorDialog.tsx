@@ -1,7 +1,5 @@
 import { Modal } from "../../Components/Modal";
 import React, { useState, useEffect } from "react";
-import { FieldSet } from "../../Components/FieldSet";
-import { FaEye } from "react-icons/fa";
 import { generateRandomPassword, generateRandomWords } from "../../Services/PasswordGenerator";
 
 enum Mode {

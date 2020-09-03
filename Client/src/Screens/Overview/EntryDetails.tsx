@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { PasswordEntry, HistoryEntry } from '../../Model/Model';
-import { alternatingClass, conditionalClass } from '../../Utilities/RenderHelpers';
+import { alternatingClass } from '../../Utilities/RenderHelpers';
 import { FaEye } from 'react-icons/fa';
 import { Tabs, Tab } from '../../Components/Tabs';
 import { ListView, ListViewItem } from '../../Components/ListView';
-import { stringify } from 'querystring';
 import { PasswordGeneratorDialog } from './PasswordGeneratorDialog';
 import { Modal } from '../../Components/Modal';
 
@@ -80,8 +79,6 @@ export function EntryDetails(props: EntryDetailsProp) {
 
     function generatePassword(event: React.MouseEvent) {
         setShowPasswordGenerator(true);
-        // const password = GeneratePassword({minLength: 32});
-        // setPassword(password);
         event.preventDefault();
     };
 
@@ -90,11 +87,11 @@ export function EntryDetails(props: EntryDetailsProp) {
     return (
         <Modal title="Entry Details"
             buttonBar={<>
-                <button type="submit" className="btn-primary">Save</button>
+                <button type="submit" className="btn-primary" form="detailsForm">Save</button>
                 <button type="button" className="btn-secondary" onClick={cancelButtonPressed}>Cancel</button>
             </>}>
             <div style={{maxWidth: 600, width: "100vw"}}>
-                <form onSubmit={onFormSubmit}>
+                <form id="detailsForm" onSubmit={onFormSubmit}>
                     <Tabs>
                         <Tab id="entry" title="Entry" isMain={true}>
                             <div className="leading-8">
