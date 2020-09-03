@@ -6,6 +6,7 @@ import { Tabs, Tab } from '../../Components/Tabs';
 import { ListView, ListViewItem } from '../../Components/ListView';
 import { PasswordGeneratorDialog } from './PasswordGeneratorDialog';
 import { Modal } from '../../Components/Modal';
+import { PasswordField } from '../../Components/PasswordField';
 
 interface EntryDetailsProp {
     entry: PasswordEntry;
@@ -108,8 +109,7 @@ export function EntryDetails(props: EntryDetailsProp) {
                                 </FormRow>
 
                                 <FormRow index={rowIndex++} label="Password">
-                                    <input type={showPassword ? "text": "password"} name="password" className="text-input w-full" value={password} onChange={(event)=>{ setPassword(event.target.value)}} required/>
-                                    <button type="button" className="btn" onClick={togglePasswordShown}><FaEye/></button>
+                                    <PasswordField password={password} onChange={(newPassword) => setPassword(newPassword)} />
                                     <button type="button" className="btn" onClick={generatePassword}>Generate</button>
                                 </FormRow> 
                             </div>

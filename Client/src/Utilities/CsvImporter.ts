@@ -1,4 +1,4 @@
-import { PasswordGroup, PasswordEntry } from "../Model/Model";
+import { PasswordGroup, PasswordEntry, HistoryEntry } from "../Model/Model";
 import { CsvParser, CsvEntry } from "./CsvParser";
 
 export class CsvImporter {
@@ -20,6 +20,8 @@ export class CsvImporter {
         newEntry.username = entry.username;
         newEntry.password = entry.password;
         newEntry.url = entry.url;
+        newEntry.addHistoryItem(HistoryEntry.createFromEntry(newEntry));
+
         return newEntry;
     }
 
