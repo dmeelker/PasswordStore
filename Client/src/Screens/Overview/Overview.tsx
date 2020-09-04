@@ -7,6 +7,7 @@ import { useObservable } from '../../Model/Observable';
 import EntryService from '../../Model/EntryService';
 import { Modal } from '../../Components/Modal';
 import { ImportCsvPanel } from './ImportCsvPanel';
+import { FaFolderPlus, FaPlus } from 'react-icons/fa';
 
 export function Overview() {
   const groups = useObservable(EntryService.root);
@@ -101,8 +102,8 @@ export function Overview() {
     <div className="h-full">
       <div className="box-border shadow bg-white border-size h-full flex flex-col">
         <div className="py-4 bg-green-500">
-          <button className="btn-toolbar" onClick={createNewGroup}>Add Group</button>
-          <button className="btn-toolbar" onClick={createNewEntry}>Add Entry</button>
+          <button className="btn-toolbar" onClick={createNewGroup}><FaFolderPlus className="inline mr-2"/>Add Group</button>
+          <button className="btn-toolbar" onClick={createNewEntry}><FaPlus className="inline mr-2"/>Add Entry</button>
           <button className="btn-toolbar" onClick={showImportCsvPanel}>Import</button>
           <input type="search" className="text-input" placeholder="search" value={searchTerms} onChange={(e) => setSearchTerms(e.target.value)} onInput={searchTermsChanged}/>
         </div>
