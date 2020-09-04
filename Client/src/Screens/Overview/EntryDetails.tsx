@@ -109,7 +109,7 @@ export function EntryDetails(props: EntryDetailsProp) {
                                 </FormRow>
 
                                 <FormRow index={rowIndex++} label="Password">
-                                    <PasswordField password={password} onChange={(newPassword) => setPassword(newPassword)} />
+                                    <PasswordField password={password} required={true} onChange={(newPassword) => setPassword(newPassword)} />
                                     <button type="button" className="btn" onClick={generatePassword}>Generate</button>
                                 </FormRow> 
                             </div>
@@ -201,7 +201,7 @@ function HistoryDetails(props: HistoryDetailsProp) {
         </HistoryDetailsEntry>
 
         <HistoryDetailsEntry title="Password">
-            <input type="password" value={props.entry.password} readOnly/>
+            <PasswordField password={props.entry.password} readonly={true}/>
         </HistoryDetailsEntry>
     </dl>
 }

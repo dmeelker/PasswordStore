@@ -1,6 +1,7 @@
 import { Modal } from "../../Components/Modal";
 import React, { useState, useEffect } from "react";
 import { generateRandomPassword, generateRandomWords } from "../../Services/PasswordGenerator";
+import { PasswordField } from "../../Components/PasswordField";
 
 enum Mode {
     RandomCharacters,
@@ -59,8 +60,7 @@ export function PasswordGeneratorDialog(props: PasswordGeneratorDialogProps) {
             <button type="submit" className="btn-primary" onClick={okClicked}>Ok</button>
             <button type="button" className="btn-secondary" onClick={close}>Cancel</button>
         </>}>
-
-        <div className="flex flex-col">
+        <div className="flex flex-col" style={{maxWidth: 500, width: "100vw"}}>
             <div className="flex-1">
                 <div>
                     Min. length: <input type="number" className="text-input" value={minLength} onChange={(e) => setMinLength(parseInt(e.target.value))} style={{width: "4rem"}}/>
@@ -79,9 +79,12 @@ export function PasswordGeneratorDialog(props: PasswordGeneratorDialogProps) {
                     {modeSelector("Random words", Mode.RandomWords)}
                 </div>
 
-                <div className="grid mt-2" style={{gap: ".3rem"}}>
+                <div className="grid mt-2" style={{gap: ".3rem", gridTemplateColumns: "auto 1fr"}}>
                     <span style={{gridRow: 1, gridColumn: 1, alignSelf: "center"}}>Password:</span>
-                    <input type="text" className="text-input" value={password} style={{gridRow: 1, gridColumn: 2}}/>
+                    <div style={{gridRow: 1, gridColumn: 2}}>
+                        <PasswordField password={password} readonly/>
+                    </div>
+                    
                     <button type="button" className="btn text-sm" onClick={() => generatePassword(mode)} style={{gridRow: 2, gridColumn: 2, justifySelf: "end"}}>Generate</button>
                 </div>
             </div>
