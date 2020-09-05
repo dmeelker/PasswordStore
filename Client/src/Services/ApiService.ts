@@ -90,7 +90,7 @@ export async function login(username: string, password: string): Promise<void> {
     }
 }
 
-export async function refresh(): Promise<void> {
+async function refresh(): Promise<void> {
     let options: RequestInit = {
         method: 'post',
         headers: {
