@@ -3,23 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using PublicApi.Auth.Accounts;
 
 namespace PublicApi.Auth
 {
     public class AuthService
     {
         private readonly ILogger<AuthService> _logger;
+        private IAccountStore _accountStore;
         private SessionStore _sessionStore;
 
-        public AuthService(ILogger<AuthService> logger, SessionStore sessionStore)
+        public AuthService(ILogger<AuthService> logger, IAccountStore accountStore, SessionStore sessionStore)
         {
             _logger = logger;
+            _accountStore = accountStore;
             _sessionStore = sessionStore;
         }
 
         public bool VerifyCredentials(string user, string password)
         {
-            return (user == "Dennis" && password == "pass") || (user == "Dennis2" && password == "pass");
+            var account = _accountStore.GetByName(user);
+            if (account == null)
+                return false;
+
+            return account.Password == password;
         }
 
         public UserSession BeginSession(string user)

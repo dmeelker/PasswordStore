@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PublicApi.Auth;
+using PublicApi.Auth.Accounts;
 
 namespace PublicApi
 {
@@ -20,6 +21,7 @@ namespace PublicApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IAccountStore, MemoryAccountStore>();
             services.AddSingleton<SessionStore>();
             services.AddSingleton<AuthService>();
 
