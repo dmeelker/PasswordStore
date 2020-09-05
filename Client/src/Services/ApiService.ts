@@ -1,8 +1,9 @@
 import * as Model from "../Model/Model";
 import * as Crypt from "../Utilities/Crypt";
 import Config from "../config";
+import moment from "moment";
 
-let token: string | null = null;
+let token: Token | null = null;
 let encryptionKey: string;
 
 export class Entry {
@@ -46,6 +47,22 @@ class EncryptedDocument {
     public salt: string = "";
 }
 
+interface TokenResponse {
+    token: string;
+    refreshToken: string;
+    expirationTime: string;
+}
+
+class Token {
+    constructor(public token: string, public refreshToken: string, public expirationTime: moment.Moment) {
+
+    }
+
+    public get IsExpired() {
+        return moment() > this.expirationTime;
+    }
+}
+
 export async function login(username: string, password: string): Promise<void> {
     let options: RequestInit = {
         method: 'post',
@@ -58,13 +75,40 @@ export async function login(username: string, password: string): Promise<void> {
         }),
     };
 
-    let request = new Request(Config.API_URL + '/auth', options);
+    let request = new Request(Config.API_URL + '/auth/login', options);
     let response = await fetch(request);
 
     if(response.ok) {
         encryptionKey = Crypt.hashKey(password);
-        const tokenResponse = await response.json();
-        token = tokenResponse.token;
+        const tokenResponse: TokenResponse = await response.json();
+        
+        token = new Token(tokenResponse.token, tokenResponse.refreshToken, moment.utc(tokenResponse.expirationTime));
+
+        return;
+    } else {
+        throw new Error(`Error loading data: ${response.statusText}`);
+    }
+}
+
+export async function refresh(): Promise<void> {
+    let options: RequestInit = {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            token: token?.token, 
+            refreshToken: token?.refreshToken
+        }),
+    };
+
+    let request = new Request(Config.API_URL + '/auth/refresh', options);
+    let response = await fetch(request);
+
+    if(response.ok) {
+        const tokenResponse: TokenResponse = await response.json();        
+        token = new Token(tokenResponse.token, tokenResponse.refreshToken, moment.utc(tokenResponse.expirationTime));
+
         return;
     } else {
         throw new Error(`Error loading data: ${response.statusText}`);
@@ -110,25 +154,35 @@ export async function savePasswords(document: Document): Promise<boolean> {
     }
 }
 
-function authenticatedGet(url: string): Promise<Response> {
+async function authenticatedGet(url: string): Promise<Response> {
+    await ensureTokenValid();
+
     let options: RequestInit = {
         method: 'get',
         headers: {
-            "auth-token": token as string
+            "auth-token": token?.token as string
         }
     };
     let request = new Request(Config.API_URL + url, options);
     return fetch(request);
 }
 
-function authenticatedPost(url: string, body: any): Promise<Response> {
+async function authenticatedPost(url: string, body: any): Promise<Response> {
+    await ensureTokenValid();
+
     let options: RequestInit = {
         method: 'post',
         headers: {
-            "auth-token": token as string
+            "auth-token": token?.token as string
         },
         body: JSON.stringify(body)
     };
     let request = new Request(Config.API_URL + url, options);
     return fetch(request);
+}
+
+async function ensureTokenValid(): Promise<void> {
+    if(token?.IsExpired) {
+        await refresh();
+    }
 }

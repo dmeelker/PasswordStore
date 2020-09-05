@@ -23,6 +23,8 @@ namespace PublicApi
             services.AddSingleton<SessionStore>();
             services.AddSingleton<AuthService>();
 
+            services.AddHostedService<CleanupService>();
+            
             services.AddControllers();
         }
 
