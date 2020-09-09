@@ -1,4 +1,4 @@
-namespace PublicApi.Auth.Accounts
+namespace PublicApi.Accounts
 {
     public class UserAccount
     {

@@ -3,30 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using PublicApi.Auth.Accounts;
+using PublicApi.Accounts;
+using PublicApi.Utilities;
 
 namespace PublicApi.Auth
 {
     public class AuthService
     {
         private readonly ILogger<AuthService> _logger;
-        private IAccountStore _accountStore;
+        private AccountService _accountService;
         private SessionStore _sessionStore;
 
-        public AuthService(ILogger<AuthService> logger, IAccountStore accountStore, SessionStore sessionStore)
+        public AuthService(ILogger<AuthService> logger, AccountService accountService, SessionStore sessionStore)
         {
             _logger = logger;
-            _accountStore = accountStore;
+            _accountService = accountService;
             _sessionStore = sessionStore;
         }
 
-        public bool VerifyCredentials(string user, string password)
+        public async Task<bool> VerifyCredentials(string user, string password)
         {
-            var account = _accountStore.GetByName(user);
+            var account = await _accountService.GetAccountByName(user);
             if (account == null)
                 return false;
 
-            return account.Password == password;
+            var suppliedPasswordHash = PasswordHasher.Hash(password, account.PasswordSalt);
+            return account.Password == suppliedPasswordHash;
         }
 
         public UserSession BeginSession(string user)

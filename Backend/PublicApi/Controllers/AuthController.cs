@@ -21,9 +21,9 @@ namespace PublicApi.Controllers
 
         [HttpPost]
         [Route("login")]
-        public IActionResult Login(LoginPost data)
+        public async Task<IActionResult> Login(LoginPost data)
         {
-            if(_authService.VerifyCredentials(data.User, data.Password))
+            if(await _authService.VerifyCredentials(data.User, data.Password))
             {
                 var session = _authService.BeginSession(data.User);
                 return Ok(new TokenResponse() { 

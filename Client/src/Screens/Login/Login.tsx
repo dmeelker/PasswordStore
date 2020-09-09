@@ -5,6 +5,7 @@ import Config from "../../config";
 
 export interface LoginProps {
     loginSuccessful: () => any;
+    onRegisterClicked: () => void;
 }
 
 export function Login(props: LoginProps) {
@@ -48,6 +49,10 @@ export function Login(props: LoginProps) {
         }
     }
 
+    function onRegisterClicked() {
+        props.onRegisterClicked();
+    }
+
     return (
         <div className="h-full flex">
         <div className="bg-white shadow p-4 m-auto px-20 py-16" style={{width: 500}}>
@@ -58,7 +63,8 @@ export function Login(props: LoginProps) {
                     <input type="password" disabled={loading} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="block w-full border border-t-0 border-gray-500 rounded-b-lg px-2 focus:outline-none text-center box-border" required />
                 </div>
                 <div className="text-center mt-4 mx-0 box-border">
-                    {renderLoginButton()}
+                    <div>{renderLoginButton()}</div>
+                    <div>or <a target="#" onClick={onRegisterClicked}>register</a></div>
                 </div>
             </form>
         </div>

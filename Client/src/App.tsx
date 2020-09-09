@@ -4,9 +4,11 @@ import { Login } from './Screens/Login/Login';
 import { Overview } from './Screens/Overview/Overview';
 import EntryService from './Model/EntryService';
 import { AppNotifications } from './Components/AppNotifications';
+import { RegisterScreen } from './Screens/Register/Register';
 
 enum Screen {
   Login,
+  Register,
   Overview
 }
 
@@ -22,8 +24,6 @@ class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    //EntryService.load();
-
     this.state = {
       activeScreen: Screen.Login
     };
@@ -33,6 +33,18 @@ class App extends React.Component<Props, State> {
     
     this.setState({
       activeScreen: Screen.Overview
+    });
+  }
+
+  onRegisterClicked() {
+    this.setState({
+      activeScreen: Screen.Register
+    });
+  }
+
+  registerScreenClosed() {
+    this.setState({
+      activeScreen: Screen.Login
     });
   }
 
@@ -46,7 +58,10 @@ class App extends React.Component<Props, State> {
   private renderCurrentScreen() {
     switch (this.state.activeScreen) {
       case Screen.Login:
-        return <Login loginSuccessful={() => this.loginSuccessful()} />;
+        return <Login loginSuccessful={() => this.loginSuccessful()} onRegisterClicked={() => this.onRegisterClicked()} />;
+
+      case Screen.Register:
+        return <RegisterScreen onClose={() => this.registerScreenClosed()}/>
 
       case Screen.Overview:
         return <Overview/>;

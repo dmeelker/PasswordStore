@@ -63,6 +63,32 @@ class Token {
     }
 }
 
+export async function register(accountName: string, password: string): Promise<void> {
+    let options: RequestInit = {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            accountName, 
+            password
+        }),
+    };
+
+    let request = new Request(Config.API_URL + '/register', options);
+    let response = await fetch(request);
+
+    if(response.ok) {
+        return;
+    } else if (response.status === 400) {
+        const errors = await response.json() as Array<string>;
+        throw new Error(`Error while creating account: ${errors.join(",")}`);
+    } else {
+        const message = await response.text();
+        throw new Error(`Error while creating account: ${message}`);
+    }
+}
+
 export async function login(username: string, password: string): Promise<void> {
     let options: RequestInit = {
         method: 'post',
