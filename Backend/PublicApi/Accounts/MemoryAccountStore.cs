@@ -6,15 +6,17 @@ namespace PublicApi.Accounts
     public class MemoryAccountStore : IAccountStore
     {
         private readonly object _lock = new object();
-        private readonly Dictionary<string, UserAccount> _accounts = new Dictionary<string, UserAccount>()
-        {
-            {"Dennis", new UserAccount
-            {
-                Name = "Dennis",
-                Password = "FMAxwcfsl0Lm0yKpOpE5bg/60dp5CwFoYwCklhozOaU=",
-                PasswordSalt = "abcdef"
-            }}
-        };
+        private readonly Dictionary<string, UserAccount> _accounts = new Dictionary<string, UserAccount>();
+        //{
+        //    {"Dennis", new UserAccount
+        //    {
+        //        Name = "Dennis",
+        //        Password = "FMAxwcfsl0Lm0yKpOpE5bg/60dp5CwFoYwCklhozOaU=",
+        //        PasswordSalt = "abcdef"
+        //    }}
+        //};
+
+        public IEnumerable<UserAccount> AllAccounts => _accounts.Values;
 
         public async Task<UserAccount> GetByName(string name)
         {

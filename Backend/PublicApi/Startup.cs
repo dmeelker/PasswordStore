@@ -21,7 +21,10 @@ namespace PublicApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IAccountStore, MemoryAccountStore>();
+            var accountStore = new FileAccountStore(new System.IO.FileInfo("accounts.json"));
+            accountStore.ReadFile().Wait();
+
+            services.AddSingleton<IAccountStore>(accountStore);
             services.AddSingleton<SessionStore>();
             services.AddSingleton<AuthService>();
             services.AddSingleton<AccountService>();
@@ -38,6 +41,7 @@ namespace PublicApi
                 app.UseDeveloperExceptionPage();
             }
 
+            
             
             //app.UseHttpsRedirection();
             app.UseCors(builder =>
