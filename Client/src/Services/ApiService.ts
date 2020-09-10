@@ -75,7 +75,7 @@ export async function register(accountName: string, password: string): Promise<v
         }),
     };
 
-    let request = new Request(Config.API_URL + '/register', options);
+    let request = new Request(Config.API_URL + '/account/register', options);
     let response = await fetch(request);
 
     if(response.ok) {
