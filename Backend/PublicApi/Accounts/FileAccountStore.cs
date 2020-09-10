@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,13 +11,15 @@ namespace PublicApi.Accounts
 {
     public class FileAccountStore : IAccountStore
     {
+        private readonly ILogger<FileAccountStore> _logger;
         private readonly SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
         private readonly FileInfo _file;
         private readonly MemoryAccountStore _memoryStore = new MemoryAccountStore();
 
-        public FileAccountStore(FileInfo file)
+        public FileAccountStore(ILogger<FileAccountStore> logger, AccountStorageConfig configuration)
         {
-            _file = file;
+            _logger = logger;
+            _file = new FileInfo(configuration.File);
         }
 
         public async Task CreateAccount(UserAccount newAccount)
@@ -26,7 +29,10 @@ namespace PublicApi.Accounts
             try
             {
                 await _memoryStore.CreateAccount(newAccount);
-                await WriteFile();
+                _ = Task.Run(async () =>
+                  {
+                      await WriteFile();
+                  });
             }
             finally
             {
@@ -43,8 +49,11 @@ namespace PublicApi.Accounts
         {
             if (!_file.Exists)
             {
+                _logger.LogInformation("No account file found");
                 return;
             }
+
+            _logger.LogInformation("Loading account file {FileName}", _file.FullName);
 
             var content = File.ReadAllText(_file.FullName);
             var accountFile = JsonSerializer.Deserialize<AccountFile>(content);
@@ -57,20 +66,33 @@ namespace PublicApi.Accounts
                     PasswordSalt = account.PasswordSalt
                 });
             }
+
+            _logger.LogInformation("Loaded {AccountCount} accounts", accountFile.Accounts.Length);
         }
 
         private async Task WriteFile()
         {
-            var accountFile = new AccountFile {
-                Accounts = _memoryStore.AllAccounts.Select(account => new AccountEntry {
-                    AccountName = account.Name,
-                    PasswordHash = account.Password,
-                    PasswordSalt = account.PasswordSalt
-                }).ToArray()
-            };
-            var content = JsonSerializer.Serialize(accountFile);
+            await _lock.WaitAsync();
 
-            await File.WriteAllTextAsync(_file.FullName, content);
+            try
+            {
+                _logger.LogInformation("Writing accounts file");
+                var accountFile = new AccountFile {
+                    Accounts = _memoryStore.AllAccounts.Select(account => new AccountEntry {
+                        AccountName = account.Name,
+                        PasswordHash = account.Password,
+                        PasswordSalt = account.PasswordSalt
+                    }).ToArray()
+                };
+                var content = JsonSerializer.Serialize(accountFile);
+
+                await File.WriteAllTextAsync(_file.FullName, content);
+                _logger.LogInformation("Successfully wrote {AccountCount} accounts to file", accountFile.Accounts.Length);
+            }
+            finally
+            {
+                _lock.Release();
+            }
         }
 
         class AccountFile

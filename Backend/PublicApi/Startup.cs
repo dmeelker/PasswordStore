@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using PublicApi.Accounts;
 using PublicApi.Auth;
+using System.Threading.Tasks;
 
 namespace PublicApi
 {
@@ -21,10 +23,9 @@ namespace PublicApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var accountStore = new FileAccountStore(new System.IO.FileInfo("accounts.json"));
-            accountStore.ReadFile().Wait();
+            RegisterConfigurations(services);
 
-            services.AddSingleton<IAccountStore>(accountStore);
+            services.AddSingleton<IAccountStore, FileAccountStore>();
             services.AddSingleton<SessionStore>();
             services.AddSingleton<AuthService>();
             services.AddSingleton<AccountService>();
@@ -34,6 +35,13 @@ namespace PublicApi
             services.AddControllers();
         }
 
+        private void RegisterConfigurations(IServiceCollection services)
+        {
+            var accountStorageConfig = new AccountStorageConfig();
+            Configuration.GetSection("AccountStorage").Bind(accountStorageConfig);
+            services.AddSingleton(accountStorageConfig);
+        }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -41,14 +49,23 @@ namespace PublicApi
                 app.UseDeveloperExceptionPage();
             }
 
-            
-            
+            InitializeServices(app).Wait();
+
             //app.UseHttpsRedirection();
             app.UseCors(builder =>
                 builder.WithOrigins("*").AllowAnyHeader());
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
+
+        private async Task InitializeServices(IApplicationBuilder app)
+        {
+            var accountStore = app.ApplicationServices.GetRequiredService<IAccountStore>();
+            if(accountStore is FileAccountStore)
+            {
+                await ((FileAccountStore)accountStore).ReadFile();
+            }
         }
     }
 }
