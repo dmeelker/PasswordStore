@@ -8,8 +8,13 @@ import EntryService from '../../Model/EntryService';
 import { ImportCsvPanel } from './ImportCsvPanel';
 import { FaFolderPlus, FaPlus } from 'react-icons/fa';
 import { ChangePasswordPanel } from './ChangePasswordPanel';
+import * as ApiService from "../../Services/ApiService";
 
-export function Overview() {
+interface OverviewProps {
+  onSessionClosed: () => void;
+}
+
+export function Overview(props: OverviewProps) {
   const groups = useObservable(EntryService.root);
   const [selectedGroupId, setSelectedGroupId] = useState(EntryService.root.get().id);
   const [openEntry, setOpenEntry] = useState<PasswordEntry>();
@@ -92,6 +97,11 @@ export function Overview() {
     }
   }
 
+  async function logOff() {
+    await ApiService.logoff();
+    props.onSessionClosed();
+  }
+
   let entryDetails;
   if (openEntry) {
     entryDetails = (
@@ -111,6 +121,7 @@ export function Overview() {
           </div>
           <div>
             <button className="btn-toolbar" onClick={() => setChangePasswordPanelVisible(true)}>Change password</button>
+            <button className="btn-toolbar" onClick={logOff}>Log off</button>
           </div>
         </div>
         <div className="flex-1 flex overflow-hidden">

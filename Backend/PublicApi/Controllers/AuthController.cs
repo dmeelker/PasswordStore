@@ -10,11 +10,11 @@ namespace PublicApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseController
     {
         private readonly AuthService _authService;
 
-        public AuthController(AuthService authService)
+        public AuthController(AuthService authService) : base(authService)
         {
             _authService = authService;
         }
@@ -37,7 +37,20 @@ namespace PublicApi.Controllers
                 return new StatusCodeResult((int) System.Net.HttpStatusCode.Forbidden);
             }
         }
-        
+
+        [HttpPost]
+        [Route("logoff")]
+        public IActionResult Logoff()
+        {
+            if (!UserAuthenticated())
+            {
+                return Forbidden();
+            }
+
+            _authService.CloseSession(Session.Token);
+            return Ok();
+        }
+
         [HttpPost]
         [Route("refresh")]
         public IActionResult Refresh(RefreshPost data)

@@ -48,6 +48,12 @@ class App extends React.Component<Props, State> {
     });
   }
 
+  onSessionClosed() {
+    this.setState({
+      activeScreen: Screen.Login
+    });
+  }
+
   public render() {
     return <>
       <AppNotifications/>
@@ -64,7 +70,7 @@ class App extends React.Component<Props, State> {
         return <RegisterScreen onClose={() => this.registerScreenClosed()}/>
 
       case Screen.Overview:
-        return <Overview/>;
+        return <Overview onSessionClosed={() => this.onSessionClosed()}/>;
     }
   }
 }

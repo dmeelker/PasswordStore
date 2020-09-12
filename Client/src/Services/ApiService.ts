@@ -116,6 +116,18 @@ export async function login(username: string, password: string): Promise<void> {
     }
 }
 
+export async function logoff() {
+    let response = await authenticatedPost('/auth/logoff', {});
+
+    if(response.ok) {
+        encryptionKey = "";
+        token = null;
+        return;
+    } else {
+        throw new Error(`Error logging off: ${response.statusText}`);
+    }
+}
+
 async function refresh(): Promise<void> {
     let options: RequestInit = {
         method: 'post',

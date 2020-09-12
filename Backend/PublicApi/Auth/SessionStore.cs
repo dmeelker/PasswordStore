@@ -31,6 +31,11 @@ namespace PublicApi.Auth
             return _sessionsByToken.TryGetValue(token, out session);
         }
 
+        public bool Remove(string token)
+        {
+            return _sessionsByToken.TryRemove(token, out _);
+        }
+
         public bool TryRefresh(string originalToken, UserSession session)
         {
             if (!_sessionsByToken.TryRemove(originalToken, out _))

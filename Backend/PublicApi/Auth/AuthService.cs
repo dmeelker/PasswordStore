@@ -40,6 +40,15 @@ namespace PublicApi.Auth
             return session;
         }
 
+        public void CloseSession(string token)
+        {
+            if(_sessionStore.TryGet(token, out var session))
+            {
+                _logger.LogInformation("Closing session {SessionId}", session.Id);
+                _sessionStore.Remove(token);
+            }
+        }
+
         public bool VerifyToken(string token, out UserSession session)
         {
             var tokenExists = _sessionStore.TryGet(token, out session);

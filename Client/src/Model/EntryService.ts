@@ -149,6 +149,10 @@ class EntryService {
         this.replaceRoot(newRoot);
     }
 
+    public clear() {
+        this.root.set(new PasswordGroup("root"));
+    }
+
     public new(name: string) {     
         const newRoot = new PasswordGroup(name);
         const recycleBin = new PasswordGroup("Recycle bin");
