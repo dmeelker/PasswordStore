@@ -49,7 +49,9 @@ export function EntryTable(props: EntryTableProps) {
   }
 
   function renderCell(entry: PasswordEntry, content: JSX.Element) {
-    return <td className={"md:leading-10" + conditionalClass(tableInFocus && selectedEntry === entry, "bg-green-200")} onClick={() => selectEntry(entry)}>{content}</td>
+    return <td className={"md:leading-10" + conditionalClass(tableInFocus && selectedEntry === entry, "bg-green-200")} 
+      onClick={() => selectEntry(entry)}
+      onDoubleClick={() => props.openEntry(entry)}>{content}</td>
   }
 
   function onDragStart(event: React.DragEvent, entry: PasswordEntry) {

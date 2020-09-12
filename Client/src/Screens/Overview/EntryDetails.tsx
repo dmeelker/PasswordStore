@@ -23,7 +23,6 @@ interface FormValues {
 
 export function EntryDetails(props: EntryDetailsProp) {
     const entry = props.entry;
-    const [showPassword, setShowPassword] = React.useState(false);
     const [password, setPassword] = React.useState(entry.password);
     const [showPasswordGenerator, setShowPasswordGenerator] = React.useState(false);
     const firstField = React.useRef<HTMLInputElement>(null);
@@ -73,11 +72,6 @@ export function EntryDetails(props: EntryDetailsProp) {
         event.preventDefault();
     };
 
-    function togglePasswordShown(event: React.MouseEvent) {
-        setShowPassword(!showPassword);
-        event.preventDefault();
-    };
-
     function generatePassword(event: React.MouseEvent) {
         setShowPasswordGenerator(true);
         event.preventDefault();
@@ -101,7 +95,7 @@ export function EntryDetails(props: EntryDetailsProp) {
                                 </FormRow>
 
                                 <FormRow index={rowIndex++} label="URL">
-                                    <input type="url" name="url" className="text-input w-full" defaultValue={props.entry.url} autoComplete="off"/>
+                                    <input type="text" name="url" className="text-input w-full" defaultValue={props.entry.url} autoComplete="off"/>
                                 </FormRow> 
 
                                 <FormRow index={rowIndex++} label="User name">
