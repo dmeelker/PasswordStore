@@ -174,16 +174,16 @@ class EntryService {
 
     private replaceRoot(newRoot: PasswordGroup) {
         this.root.set(newRoot);
-        this.modelChanged();
+        this.save();
     }
 
-    private modelChanged() {
+    public async save() {
         const document = new Api.Document();
         document.format = 1;
         document.version = ++this._documentVersion;
         document.root = convertToApiModelGroup(this.root.get());
 
-        Api.savePasswords(document).then((result) => {
+        await Api.savePasswords(document).then((result) => {
             NotificationService.showNotification("Changes saved");
         });
     }

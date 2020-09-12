@@ -141,6 +141,23 @@ async function refresh(): Promise<void> {
     }
 }
 
+export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {
+    let response = await authenticatedPost('/account/changepassword', {
+        currentPassword,
+        newPassword
+    });
+
+    if(response.ok) {
+        encryptionKey = Crypt.hashKey(newPassword);
+        await response.text();
+    } else if (response.status === 400) {
+        const error = await response.text();
+        throw new Error(`Error while changing password: ${error}`);
+    } else {
+        throw new Error(`Error while changing password: ${response.statusText}`);
+    }
+}
+
 export async function getPasswords(): Promise<Document | null> {
     let response = await authenticatedGet('/repository');
 
@@ -199,7 +216,8 @@ async function authenticatedPost(url: string, body: any): Promise<Response> {
     let options: RequestInit = {
         method: 'post',
         headers: {
-            "auth-token": token?.token as string
+            "auth-token": token?.token as string,
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
     };

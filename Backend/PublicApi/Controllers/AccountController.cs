@@ -48,7 +48,7 @@ namespace PublicApi.Controllers
                 return Forbidden();
             }
 
-            var result = await _accountService.ChangePassword(Session.User, data.NewPassword);
+            var result = await _accountService.ChangePassword(Session.User, data.CurrentPassword, data.NewPassword);
 
             if (result.Success)
             {
@@ -69,6 +69,7 @@ namespace PublicApi.Controllers
 
     public class ChangePasswordPost
     {
+        public string CurrentPassword { get; set; }
         public string NewPassword { get; set; }
     }
 }

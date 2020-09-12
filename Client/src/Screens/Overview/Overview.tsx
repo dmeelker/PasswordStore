@@ -7,6 +7,7 @@ import { useObservable } from '../../Model/Observable';
 import EntryService from '../../Model/EntryService';
 import { ImportCsvPanel } from './ImportCsvPanel';
 import { FaFolderPlus, FaPlus } from 'react-icons/fa';
+import { ChangePasswordPanel } from './ChangePasswordPanel';
 
 export function Overview() {
   const groups = useObservable(EntryService.root);
@@ -16,6 +17,7 @@ export function Overview() {
   const [searchResults, setSearchResults] = useState<PasswordEntry[]>();
   const [searchTerms, setSearchTerms] = useState("");
   const [importCsvPanelVisible, setImportCsvPanelVisible] = useState(false);
+  const [changePasswordPanelVisible, setChangePasswordPanelVisible] = useState(false);
 
   const selectedGroup = groups.findGroupById(selectedGroupId);
   
@@ -108,7 +110,7 @@ export function Overview() {
             <input type="search" className="text-input" placeholder="search" value={searchTerms} onChange={(e) => setSearchTerms(e.target.value)} onInput={searchTermsChanged}/>
           </div>
           <div>
-            <button className="btn-toolbar"  >Import</button>
+            <button className="btn-toolbar" onClick={() => setChangePasswordPanelVisible(true)}>Change password</button>
           </div>
         </div>
         <div className="flex-1 flex overflow-hidden">
@@ -130,6 +132,7 @@ export function Overview() {
         </div>
         {entryDetails}
         {importCsvPanelVisible && <ImportCsvPanel onClose={() => setImportCsvPanelVisible(false)}/>}
+        {changePasswordPanelVisible && <ChangePasswordPanel onClose={() => setChangePasswordPanelVisible(false)}/>}
       </div>
     </div>
   );

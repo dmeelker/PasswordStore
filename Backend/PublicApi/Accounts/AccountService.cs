@@ -77,7 +77,7 @@ namespace PublicApi.Accounts
             }
         }
 
-        public async Task<ActionResult<string>> ChangePassword(string accountName, string newPassword)
+        public async Task<ActionResult<string>> ChangePassword(string accountName, string currentPassword, string newPassword)
         {
             _logger.LogInformation("Changing password for account {AccountName}", accountName);
             var account = await _accountStore.GetByName(accountName);
@@ -85,7 +85,13 @@ namespace PublicApi.Accounts
             {
                 return ActionResult<string>.CreateError("Account does not exist");
             }
-            
+
+            var currentPasswordHash = PasswordHasher.Hash(currentPassword, account.PasswordSalt);
+            if (currentPasswordHash != account.Password)
+            {
+                return ActionResult<string>.CreateError("Current password is invalid");
+            }
+
             var passwordHash = PasswordHasher.Hash(newPassword, account.PasswordSalt);
             
             return await _accountStore.UpdatePassword(accountName, passwordHash);
