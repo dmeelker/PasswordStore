@@ -77,6 +77,20 @@ namespace PublicApi.Accounts
             }
         }
 
+        public async Task<ActionResult<string>> ChangePassword(string accountName, string newPassword)
+        {
+            _logger.LogInformation("Changing password for account {AccountName}", accountName);
+            var account = await _accountStore.GetByName(accountName);
+            if (account == null)
+            {
+                return ActionResult<string>.CreateError("Account does not exist");
+            }
+            
+            var passwordHash = PasswordHasher.Hash(newPassword, account.PasswordSalt);
+            
+            return await _accountStore.UpdatePassword(accountName, passwordHash);
+        }
+        
         private async Task<bool> AccountNameIsUsed(string accountName)
         {
             return await _accountStore.GetByName(accountName) != null;

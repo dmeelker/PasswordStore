@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using PublicApi.Utilities;
 
 namespace PublicApi.Accounts
 {
@@ -33,6 +34,25 @@ namespace PublicApi.Accounts
                   {
                       await WriteFile();
                   });
+            }
+            finally
+            {
+                _lock.Release();
+            }
+        }
+
+        public async Task<ActionResult<string>> UpdatePassword(string name, string newPassword)
+        {
+            await _lock.WaitAsync();
+
+            try
+            {
+                var result = await _memoryStore.UpdatePassword(name, newPassword);
+                _ = Task.Run(async () =>
+                {
+                    await WriteFile();
+                });
+                return result;
             }
             finally
             {

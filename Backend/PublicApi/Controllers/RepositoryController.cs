@@ -13,13 +13,13 @@ namespace PublicApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RepositoryController : ControllerBase
+    public class RepositoryController : BaseController
     {
         private readonly ILogger<RepositoryController> _logger;
         private readonly DocumentRepository _repository = new DocumentRepository();
         private readonly AuthService _authService;
 
-        public RepositoryController(ILogger<RepositoryController> logger, AuthService authService)
+        public RepositoryController(ILogger<RepositoryController> logger, AuthService authService) : base(authService)
         {
             _logger = logger;
             _authService = authService;
@@ -28,13 +28,12 @@ namespace PublicApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var header = HttpContext.Request.Headers["auth-token"].FirstOrDefault();
-            if(!_authService.VerifyToken(header, out var session))
+            if(!UserAuthenticated())
             {
-                return new StatusCodeResult((int)HttpStatusCode.Forbidden);
+                return Forbidden();
             }
 
-            var document = await _repository.Get(session.User);
+            var document = await _repository.Get(Session.User);
 
             return document != null ? Ok(document) : (IActionResult)NotFound();
         }
@@ -42,15 +41,14 @@ namespace PublicApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Put()
         {
-            var header = HttpContext.Request.Headers["auth-token"].FirstOrDefault();
-            if (!_authService.VerifyToken(header, out var session))
+            if(!UserAuthenticated())
             {
-                return new StatusCodeResult((int)HttpStatusCode.Forbidden);
+                return Forbidden();
             }
 
             var text = await new StreamReader(Request.Body).ReadToEndAsync();
-            _logger.LogInformation("Updating repository for user {username}", session.User);
-            await _repository.Save(session.User, Encoding.UTF8.GetBytes(text));
+            _logger.LogInformation("Updating repository for user {username}", Session.User);
+            await _repository.Save(Session.User, Encoding.UTF8.GetBytes(text));
             return Ok();
         }
     }

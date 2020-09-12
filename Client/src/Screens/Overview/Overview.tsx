@@ -5,7 +5,6 @@ import { GroupList } from './GroupList';
 import { EntryDetails } from './EntryDetails';
 import { useObservable } from '../../Model/Observable';
 import EntryService from '../../Model/EntryService';
-import { Modal } from '../../Components/Modal';
 import { ImportCsvPanel } from './ImportCsvPanel';
 import { FaFolderPlus, FaPlus } from 'react-icons/fa';
 
@@ -101,11 +100,16 @@ export function Overview() {
   return (
     <div className="h-full">
       <div className="box-border shadow bg-white border-size h-full flex flex-col">
-        <div className="py-4 bg-green-500">
-          <button className="btn-toolbar" onClick={createNewGroup}><FaFolderPlus className="inline mr-2"/>Add Group</button>
-          <button className="btn-toolbar" onClick={createNewEntry}><FaPlus className="inline mr-2"/>Add Entry</button>
-          <button className="btn-toolbar" onClick={showImportCsvPanel}>Import</button>
-          <input type="search" className="text-input" placeholder="search" value={searchTerms} onChange={(e) => setSearchTerms(e.target.value)} onInput={searchTermsChanged}/>
+        <div className="py-4 bg-green-500 flex flex-row">
+          <div className="flex-1">
+            <button className="btn-toolbar" onClick={createNewGroup}><FaFolderPlus className="inline mr-2"/>Add Group</button>
+            <button className="btn-toolbar" onClick={createNewEntry}><FaPlus className="inline mr-2"/>Add Entry</button>
+            <button className="btn-toolbar" onClick={showImportCsvPanel}>Import</button>
+            <input type="search" className="text-input" placeholder="search" value={searchTerms} onChange={(e) => setSearchTerms(e.target.value)} onInput={searchTermsChanged}/>
+          </div>
+          <div>
+            <button className="btn-toolbar"  >Import</button>
+          </div>
         </div>
         <div className="flex-1 flex overflow-hidden">
           <div className="w-1/4 overflow-y-auto bg-gray-800 text-gray-400 md:p-2">

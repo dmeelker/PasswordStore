@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using PublicApi.Utilities;
 
 namespace PublicApi.Accounts
 {
@@ -39,6 +40,21 @@ namespace PublicApi.Accounts
                 }
 
                 _accounts.Add(newAccount.Name, newAccount);
+            }
+        }
+
+        public Task<ActionResult<string>> UpdatePassword(string name, string newPassword)
+        {
+            lock (_lock)
+            {
+                if (!_accounts.TryGetValue(name, out var account))
+                {
+                    return Task.FromResult(ActionResult<string>.CreateError("Unknown account"));
+                }
+
+                account.Password = newPassword;
+
+                return Task.FromResult(ActionResult<string>.CreateSuccess());
             }
         }
     }
